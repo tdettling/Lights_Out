@@ -1,0 +1,28 @@
+class Graph(object):
+    """Creates a graph, describing the number of vertices (num_vert) as well as
+        the edges (adj_mat or edge_set)"""
+    def __init__(self, adj_dict):
+        # number of vertices, adjacency matrix, edge set
+        self.adj_dict = adj_dict
+        
+    def printAdjacency(self):
+        for vert in self.adj_dict:
+            print (vert)
+    
+    def checkAdjacency(self):
+        # checks consistency of adjacency matrix
+        result = True
+        for x in self.adj.dict:
+            for vert in self.adj.dict[x]:
+                if vert not in self.adj.dict:
+                    result = False
+                    print ("Vertex " + str(vert) + " is adjacent to " + str(x) + " but is not a key.")
+                    break
+                if x not in self.adj.dict[vert]:
+                    result = False
+                    print ("Vertex " + str(x) + " is missing from key " + str(vert) + ".")
+        for x in self.adj.dict:
+                if x in self.adj_dict[x]:
+                    result = False
+                    print ("You have a loop on vertex" + str(x) + ".")
+        return result
