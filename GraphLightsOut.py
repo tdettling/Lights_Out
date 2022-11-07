@@ -82,11 +82,12 @@ In other words, a pair of vertices in the complementary matrix has an edge if an
 
 def constCompleteGraph(num_vertices):
     """Constructs and returns the adjacency dictionary for a complete graph with "num_vertices" vertices."""
-       adj_graph = initializeAdjDict(num_vertices) # Initialize the adjacency dictionary.
-       for vertex in adj_graph:
-           for other_vertex in adj_graph:
-               if other_vertex vertex != other_vertex:
-                   adj_graph[vertex].append(other_vertex)
+    adj_graph = initializeAdjDict(num_vertices) # Initialize the adjacency dictionary.
+    for vertex in adj_graph:
+        for other_vertex in adj_graph:
+            #if other_vertex vertex
+            if other_vertex != other_vertex:
+                adj_graph[vertex].append(other_vertex)
 
 def constPathGraph(num_vertices):
     """Constructs and returns the adjacency dictionary for a path graph with "num_vertices" vertices."""
@@ -261,12 +262,15 @@ that results from toggling "vertex"."""
     new_labeling = tuple(list_labeling)
     return new_labeling
 
-def incrementLabelCayley(adj_graph, labeling, cayley_table, vertex):
+def incrementLabelCayley(adj_graph, labeling, vertex):
+    #removed cayley_table as an input (x,y,cayley_table,z)
     """Records the result of toggling the vertex "vertex" in the Group Labeling Lights Out
 game.  The input "adj_graph" is the adjacency dictionary of the graph.  The tuple "labeling" represents the labeling of
 the graph.  The array "cayley_table" is the Cayley table for the graph labels.  The output will be the labeling
 that results from toggling "vertex"."""
-    list_labeling = list(labeling) # This converts the labeling to a list.
+    #
+    list_labeling = list(labeling)
+    #num_labels = len(list_labeling) # This converts the labeling to a list.
     for adj_vertex in adj_graph[vertex]: # Look through all vertices "adj_vertex" that are adjacent to "vertex".
         list_labeling[adj_vertex] = (list_labeling[adj_vertex] + list_labeling[vertex]) % num_labels # We add the label of "vertex" to the label of "adj_vertex".
     list_labeling[vertex] = (list_labeling[vertex] + list_labeling[vertex]) % num_labels # We add the label of "vertex" to itself.

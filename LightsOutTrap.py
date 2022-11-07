@@ -15,6 +15,7 @@ Groups are represented by integers starting at zero.  The group structure is
 stored in a Cayley table (matrix)."""
 
 import itertools
+import GraphLightsOut 
 
 def initializeAdjDict(num_vertices):
     """Returns an adjacency dictionary (for directed or undirected graph) on "num_vertices" vertices, each having an empty adjacency list"""
@@ -404,6 +405,7 @@ all labelings in its connected component gives us the zero component).  Any comp
 Conjecture are written to the file."""
     num_vertices = len(adj_graph) # This is the number of vertices in the undirected graph.
     labeling_list = possibleLabelings(num_labels, num_vertices) # This is the set of all possible vertex labelings.
+    #is this supposed to be constLabelingDiagraphGroupZn()?
     adj_digraph = constLabelingDigraph(adj_graph, num_labels) # This is the "labeling digraph" of the graph.
     zero_labeling = labeling_list[0] # This will be our labeling with all zeros.
     component_info = constComponentList(adj_digraph, zero_labeling) # This generates the weakly connected components and the index of the component containing "zero_labeling".
@@ -428,7 +430,7 @@ Conjecture are written to the file."""
     counterexamples = list() # This is a list of counterexamples to Vasily's Conjecture.
     for component in component_list: # We need to check each component to see if the conjecture is true or false.
         for labeling in component: # We need to check each labeling to see whether or not they all work.
-            match = componentMatch(labeling, component, zero_component, num_labels) # This checks for a match.
+            match = GraphLightsOut.componentMatch(labeling, component, zero_component, num_labels) # This checks for a match.
             if match is False:
                 counterexamples.append(component) # If match is "false", "component" is included in the list of counterexamples.
                 break # Once we find one counterexample in the component, there is no need to search for more.  Skip to the next component.
@@ -446,7 +448,7 @@ labeling_dict = dict()
 adj_dict_digraph = dict()
 
 adj_dict = constPathGraph(5)
-neighbor_mat = dictionaryToMatrix(constPathGraph(5))
-reduced_mat = matrixReduceModulo(dictionaryToMatrix(constPathGraph(5)), 3)
+neighbor_mat = GraphLightsOut.dictionaryToMatrix(constPathGraph(5))
+reduced_mat = GraphLightsOut.matrixReduceModulo(GraphLightsOut.dictionaryToMatrix(constPathGraph(5)), 3)
 print(neighbor_mat)
 print(reduced_mat)

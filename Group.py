@@ -1,3 +1,5 @@
+''''Groups are represented by integers starting at zero.  The group structure is
+stored in a Cayley table (matrix).'''
 class Group(object):
     """Creates a group describing number of elements and Cayley table.  Includes
     methods to construct Cayley tables, multiply elements, and construct common groups"""
