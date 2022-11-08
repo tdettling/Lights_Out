@@ -74,7 +74,7 @@ ending at vertex "end"."""
 
 def constComplement(adj_graph):
     """Given the graph with adjacency dictionary "adj_graph", it gives as output the adjacency dictionary for the graph's complement.
-In other words, a pair of vertices in the complementary matrix has an edge if and only if it is not an edge in the original graph."""
+    In other words, a pair of vertices in the complementary matrix has an edge if and only if it is not an edge in the original graph."""
     adj_complement = initializeAdjDict(len(adj_graph))
     for vertex in adj_graph:
         for other_vertex in adj_graph:
@@ -83,11 +83,12 @@ In other words, a pair of vertices in the complementary matrix has an edge if an
 
 def constCompleteGraph(num_vertices):
     """Constructs and returns the adjacency dictionary for a complete graph with "num_vertices" vertices."""
-       adj_graph = initializeAdjDict(num_vertices) # Initialize the adjacency dictionary.
-       for vertex in adj_graph:
-           for other_vertex in adj_graph:
-               if other_vertex vertex != other_vertex:
-                   adj_graph[vertex].append(other_vertex)
+    adj_graph = initializeAdjDict(num_vertices) # Initialize the adjacency dictionary.
+    for vertex in adj_graph:
+        for other_vertex in adj_graph:
+            #if vertex != other_vertex 
+            if other_vertex vertex != other_vertex:
+                adj_graph[vertex].append(other_vertex)
 
 def constPathGraph(num_vertices):
     """Constructs and returns the adjacency dictionary for a path graph with "num_vertices" vertices."""
@@ -368,17 +369,18 @@ vertices have a parity dictionary "parity_dict" whose keys are the vertices and 
 interior vertices are not-even.  If such a path is possible, the function returns a list of all paths (with vertices in order).
 If not, the function returns the Boolean value "false"."""
     path_list = list() # There are no paths in the list yet.
-    for vertex in adj_graph: #  Look through each vertex in the graph.
+    for vertex in adj_digraph: #  Look through each vertex in the graph.
+        #is labeling_dict supposed to be parity_dict
         if labeling_dict[vertex] == 0: # We only want starting vertices that are even.
             current_path =[vertex] # Put "vertex" at the beginning of the path list.
             current_length = 0 # No edges in the path yet, so the path length is currently zero.
-            for adj_vertex in adj_graph[vertex]: # Look at all the vertices adjacent to "vertex" for an odd vertex.
+            for adj_vertex in adj_digraph[vertex]: # Look at all the vertices adjacent to "vertex" for an odd vertex.
                 if adj_vertex == 1:
                     current_path.append(adj_vertex) # Add "adj_vertex" to the path.
                     current_length = 1 # Keep track of the length of the path.
                     current_vertex = adj_vertex
                     while end is not here: # We have to figure out an exit condition here.
-                        for adj_vertex in adj_graph[current_vertex]: # Look at every vertex adjacent to "current_vertex".
+                        for adj_vertex in adj_digraph[current_vertex]: # Look at every vertex adjacent to "current_vertex".
                             if adj_vertex == 1:
                                 current_path.append(adj_vertex)
                                 current_length += 1
@@ -406,13 +408,13 @@ Conjecture are written to the file."""
     num_vertices = len(adj_graph) # This is the number of vertices in the undirected graph.
     labeling_list = possibleLabelings(num_labels, num_vertices) # This is the set of all possible vertex labelings.
     #is this supposed to be constLabelingDiagraphGroupZn()?
-    adj_digraph = constLabelingDigraph(adj_graph, num_labels) # This is the "labeling digraph" of the graph.
+    adj_digraph = constLabelingDigraphGroupZn(adj_graph, num_labels) # This is the "labeling digraph" of the graph.
     zero_labeling = labeling_list[0] # This will be our labeling with all zeros.
     component_info = constComponentList(adj_digraph, zero_labeling) # This generates the weakly connected components and the index of the component containing "zero_labeling".
     component_list = component_info[0] # This is the list of weakly connected components.
     components_size = componentCardinality(component_list) # This gives us the cardinalities of the weakly connected components.
     zero_component = component_list[component_info[1]] # This is the component containing the zero labeling.
-    traps = findTrap(adj_digraph, zero_labeling, zero_component) # This is a list of all unwinnable labelings in the zero component.
+    traps = GraphLightsOut.findTrap(adj_digraph, zero_labeling, zero_component) # This is a list of all unwinnable labelings in the zero component.
     my_file = open('Graph' + str(name) + 'Labels' + str(num_labels), 'w') # The name of our file will be the name of the graph and the number of labels.
     my_file.write('Graph: ' + name + '\n') # Write in the name of the graph.
     my_file.write('Number of Labels: ' + str(num_labels) + '\n') # Write in the number of labels.
@@ -442,13 +444,3 @@ Conjecture are written to the file."""
             my_file.write(str(component) + '\n')
     my_file.close()
 
-
-labeling_list = list()
-labeling_dict = dict()
-adj_dict_digraph = dict()
-
-adj_dict = constPathGraph(5)
-neighbor_mat = GraphLightsOut.dictionaryToMatrix(constPathGraph(5))
-reduced_mat = GraphLightsOut.matrixReduceModulo(GraphLightsOut.dictionaryToMatrix(constPathGraph(5)), 3)
-print(neighbor_mat)
-print(reduced_mat)

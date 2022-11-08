@@ -15,6 +15,7 @@ Groups are represented by integers starting at zero.  The group structure is
 stored in a Cayley table (matrix)."""
 
 import itertools
+import LightsOutTrap
 
 def initializeAdjDict(num_vertices):
     """Returns an adjacency dictionary (for directed or undirected graph) on "num_vertices" vertices, each having an empty adjacency list"""
@@ -268,10 +269,11 @@ def incrementLabelCayley(adj_graph, labeling, vertex):
 game.  The input "adj_graph" is the adjacency dictionary of the graph.  The tuple "labeling" represents the labeling of
 the graph.  The array "cayley_table" is the Cayley table for the graph labels.  The output will be the labeling
 that results from toggling "vertex"."""
-    #
+    #num_labels do not exist here
     list_labeling = list(labeling)
     #num_labels = len(list_labeling) # This converts the labeling to a list.
     for adj_vertex in adj_graph[vertex]: # Look through all vertices "adj_vertex" that are adjacent to "vertex".
+        #num_labels is Z_n? 
         list_labeling[adj_vertex] = (list_labeling[adj_vertex] + list_labeling[vertex]) % num_labels # We add the label of "vertex" to the label of "adj_vertex".
     list_labeling[vertex] = (list_labeling[vertex] + list_labeling[vertex]) % num_labels # We add the label of "vertex" to itself.
     new_labeling = tuple(list_labeling)
@@ -313,6 +315,7 @@ def constLabelingDigraphCayley(adj_graph, cayley_table):
 dictionary "adj_graph" and the labeling set given by "num_label" for the Group Labeling Lights Out game, where the
 group is given by "cayley_table".  The keys
 are vertex labelings of the graph and the values are (adjacent) labelings obtained by toggling any vertices with nonzero labels"""
+    #num_labels does not exist here. 
     labeling_list = possibleLabelings(num_labels, len(adj_graph))  # Constructs a list of all possible labels.  These are the vertices of the digraph.
     adj_digraph = dict() # Initialize the adjacency dictionary for the "labeling digraph".
     for labeling in labeling_list:  # Take each labeling separately.
@@ -646,7 +649,7 @@ all labelings in its connected component gives us the zero component).  Any comp
 Conjecture are written to the file."""
     num_vertices = len(adj_graph) # This is the number of vertices in the undirected graph.
     labeling_list = possibleLabelings(num_labels, num_vertices) # This is the set of all possible vertex labelings.
-    adj_digraph = constLabelingDigraph(adj_graph, num_labels) # This is the "labeling digraph" of the graph.
+    adj_digraph = LightsOutTrap.constLabelingDigraph(adj_graph, num_labels) # This is the "labeling digraph" of the graph.
     zero_labeling = labeling_list[0] # This will be our labeling with all zeros.
     component_info = constComponentList(adj_digraph, zero_labeling) # This generates the weakly connected components and the index of the component containing "zero_labeling".
     component_list = component_info[0] # This is the list of weakly connected components.
@@ -694,20 +697,21 @@ def constDirectProduct(cayley1, cayley2):
     """Constructs the direct product of the groups with Cayley tables cayley1 and
 cayley2.  The ordered pair (m,n) is represented by the integer len(C2)*m + n.  Returns a
 list whose components are the cardinality of the group and the Cayley matrix."""
-    num = len(C1) * len(C2)
+    #c1 and c2 are meant to be cayley1 and cayley2 correct?
+    num = len(cayley1) * len(cayley2)
     cayley = zeroMatrix(num)
-    for x in range(len(C1)): # Compute (x,y)*(r,s) = (xr,ys)
-        for y in range(len(C2)):
-            for r in range(len(C1)):
-                for s in range(len(C2)):
-                    cayley[len(C2) * x + y][len(C2) * r + s] = len(C2) * C1[x][r] + C2[y][s]
+    for x in range(len(cayley1)): # Compute (x,y)*(r,s) = (xr,ys)
+        for y in range(len(cayley2)):
+            for r in range(len(cayley1)):
+                for s in range(len(cayley2)):
+                    cayley[len(cayley2) * x + y][len(cayley2) * r + s] = len(cayley2) * cayley2[x][r] + cayley2[y][s]
     return [num, cayley]
 
 def decodeDirectProduct(cayley1, cayley2, elt):
     """Converts the element "elt" of the direct product G1xG2, where G1 has
 Cayley table cayley1 and G2 has Cayley table cayley, to an ordered pair."""
-    y = elt % len(C2)
-    x = int((elt - y) / len(C2))
+    y = elt % len(cayley2)
+    x = int((elt - y) / len(cayley2))
     return [x,y]
 
 def constWreathProduct(cayley1, cayley2):
@@ -736,14 +740,3 @@ input the result of multiplying them (in order)."""
             if adj_vertex != -1 and adj_vertex not in adj_graph[vertex]: # Constructs the edge entered above, but only if it hasn't been constructed already.
                 constEdge(adj_graph, vertex, adj_vertex)
     return adj_graph
-
-
-labeling_list = list()
-labeling_dict = dict()
-adj_dict_digraph = dict()
-
-adj_dict = constPathGraph(5)
-neighbor_mat = dictionaryToMatrix(constPathGraph(5))
-reduced_mat = matrixReduceModulo(dictionaryToMatrix(constPathGraph(5)), 3)
-print(neighbor_mat)
-print(reduced_mat)

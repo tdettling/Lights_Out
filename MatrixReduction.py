@@ -400,31 +400,3 @@ def reduceColumnModuloInt(mat):
             reduceColumnSubtractInt(mat, pivot_row, pivot_column) # If there is a nonzero entry, we use subtraction to reduce the column.
             pivot_row += 1 # Move on to the next row and next column.
 
-
-adj_graph = {0:[1,5], 1:[0,2], 2:[1,3], 3:[2,4], 4:[3,5], 5:[4,0], 6:[7], 7:[6], 8:[9], 9:[8], 10:[11], 11:[10]}
-#adj_pendant = constPendant(adj_comp)
-#neighbor_mat = dictionaryToMatrix(constPathGraph(6))
-#neighbor_mat = dictionaryToMatrix(constDisjointPaths(15, [2,3,4]))
-#neighbor_mat = dictionaryToMatrix(constCompMultiGraph([2,3]))
-#neighbor_mat = dictionaryToMatrix(constCaterGraph([[1,2],[1,1,1]]))
-#neighbor_mat = dictionaryToMatrix(constTheta([2,3,4]))
-#neighbor_mat = dictionaryToMatrix(constRemoveMaximumMatching(4))
-#neighbor_mat = dictionaryToMatrix(constRemoveMaxMatchPlusOne(12))
-#adj_mat = dictionaryToAdjMatrix(adj_graph)
-my_graph = {1:[3,4,5], 2:[4,5], 3:[1,4,5], 4:[1,2,3], 5:[1,2,3]}
-neighbor_mat = dictionaryToMatrix(my_graph)
-#adj_dict = constCompMultiGraph([3,3])
-
-#subPathAdj(adj_dict, 0, 3)
-#subPathAdj(adj_dict, 4, 6)
-#subPathAdj(adj_dict, 7, 8)
-#print(adj_comp)
-#print(adj_pendant)
-#neighbor_mat = dictionaryToMatrix(adj_dict)
-printMatrix(neighbor_mat)
-reduceColumnModuloInt(neighbor_mat)
-printMatrix(neighbor_mat)
-
-
-
-
