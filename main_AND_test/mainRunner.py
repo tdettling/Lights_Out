@@ -3,9 +3,9 @@
 considered the controller of the program, list below commands to run'''
 
 
-import GraphLightsOut
-import LightsOutTrap
-import MatrixReduction
+import logic.GraphLightsOut as GraphLightsOut
+import logic.LightsOutTrap as LightsOutTrap
+import logic.MatrixReduction as MatrixReduction
 
 #Code from GraphLightsOut
 def GraphLightsOut_runner():

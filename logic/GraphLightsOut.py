@@ -15,7 +15,7 @@ Groups are represented by integers starting at zero.  The group structure is
 stored in a Cayley table (matrix)."""
 
 import itertools
-import LightsOutTrap
+import logic.LightsOutTrap as LightsOutTrap
 
 def initializeAdjDict(num_vertices):
     """Returns an adjacency dictionary (for directed or undirected graph) on "num_vertices" vertices, each having an empty adjacency list"""
