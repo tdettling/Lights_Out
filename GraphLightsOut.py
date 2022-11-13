@@ -87,7 +87,7 @@ def constCompleteGraph(num_vertices):
     for vertex in adj_graph:
         for other_vertex in adj_graph:
             #if other_vertex vertex
-            if other_vertex != other_vertex:
+            if vertex != other_vertex:
                 adj_graph[vertex].append(other_vertex)
 
 def constPathGraph(num_vertices):
@@ -263,7 +263,7 @@ that results from toggling "vertex"."""
     new_labeling = tuple(list_labeling)
     return new_labeling
 
-def incrementLabelCayley(adj_graph, labeling, vertex):
+def incrementLabelCayley(adj_graph, labeling, cayley_table, vertex):
     #removed cayley_table as an input (x,y,cayley_table,z)
     """Records the result of toggling the vertex "vertex" in the Group Labeling Lights Out
 game.  The input "adj_graph" is the adjacency dictionary of the graph.  The tuple "labeling" represents the labeling of
@@ -271,6 +271,7 @@ the graph.  The array "cayley_table" is the Cayley table for the graph labels.  
 that results from toggling "vertex"."""
     #num_labels do not exist here
     list_labeling = list(labeling)
+    num_labels = len(cayley_table)
     #num_labels = len(list_labeling) # This converts the labeling to a list.
     for adj_vertex in adj_graph[vertex]: # Look through all vertices "adj_vertex" that are adjacent to "vertex".
         #num_labels is Z_n? 
@@ -316,6 +317,7 @@ dictionary "adj_graph" and the labeling set given by "num_label" for the Group L
 group is given by "cayley_table".  The keys
 are vertex labelings of the graph and the values are (adjacent) labelings obtained by toggling any vertices with nonzero labels"""
     #num_labels does not exist here. 
+    num_labels = len(cayley_table)
     labeling_list = possibleLabelings(num_labels, len(adj_graph))  # Constructs a list of all possible labels.  These are the vertices of the digraph.
     adj_digraph = dict() # Initialize the adjacency dictionary for the "labeling digraph".
     for labeling in labeling_list:  # Take each labeling separately.
@@ -490,33 +492,6 @@ whose values are "0" if the labeling is even and "1" if the labeling is not even
     for labeling in adj_digraph:
         parity_dict[labeling] = determineParity(labeling)
     return parity_dict
-
-def findOddBlocks(adj_graph, labeling_dict):
-    """We are given a graph (most likely the undirected version of a digraph) with adjacency dictionary "adj_graph" whose
-vertices have a labeling dictionary "labeling_dict" whose keys are the vertices and whose keys are either 0 (even) or 1
-(not_even).  This function finds, if possible, all undirected paths whose beginning and ending vertices are even and whose
-other vertices are not-even.  If such a path is possible, the function returns a list of all paths (with vertices in order).
-If not, the function returns the Boolean value "false"."""
-    path_list = list() # There are no paths in the list yet.
-    for vertex in adj_graph: #  Look through each vertex in the graph.
-        if labeling_dict[vertex] == 0: # We only want starting vertices that are even.
-            current_path =[vertex] # Put "vertex" at the beginning of the path list.
-            current_length = 0 # No edges in the path yet, so the path length is currently zero.
-            for adj_vertex in adj_graph[vertex]: # Look at all the vertices adjacent to "vertex" for an odd vertex.
-                if adj_vertex == 1:
-                    current_path.append(adj_vertex) # Add "adj_vertex" to the path.
-                    current_length = 1 # Keep track of the length of the path.
-                    current_vertex = adj_vertex
-                    while end is not here: # We have to figure out an exit condition here.
-                        for adj_vertex in adj_graph[current_vertex]: # Look at every vertex adjacent to "current_vertex".
-                            if adj_vertex == 1:
-                                current_path.append(adj_vertex)
-                                current_length += 1
-                                current_vertex = adj_vertex
-                            else:
-                                end_path = current_path # We are almost at the end of our path.
-                                end_path.append(adj_vertex) # Add on the even vertex to the end of the path.
-                                path_list.append(end_path)
 
 def findEvenDetours(adj_digraph, even_vertex1, even_vertex2):
     """Given two vertices "even_vertex1" and "even_vertex2" in the digraph, the function finds, if possible, an undirected path

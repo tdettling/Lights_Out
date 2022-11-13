@@ -80,14 +80,13 @@ def constComplement(adj_graph):
         for other_vertex in adj_graph:
             if other_vertex not in adj_graph[vertex] and vertex != other_vertex:
                 adj_complement[vertex].append(other_vertex)
-
+#FIXME 
 def constCompleteGraph(num_vertices):
     """Constructs and returns the adjacency dictionary for a complete graph with "num_vertices" vertices."""
     adj_graph = initializeAdjDict(num_vertices) # Initialize the adjacency dictionary.
     for vertex in adj_graph:
         for other_vertex in adj_graph:
-            #if vertex != other_vertex 
-            if other_vertex vertex != other_vertex:
+            if vertex != other_vertex:
                 adj_graph[vertex].append(other_vertex)
 
 def constPathGraph(num_vertices):
@@ -361,34 +360,6 @@ whose values are "0" if the labeling is even and "1" if the labeling is not even
                 parity_dict[labeling] = 1 # we change the parity dictionary to 1.
                 break # Once we find an odd label, it is pointless to continue.
     return parity_dict
-
-def findOddBlocks(adj_digraph, parity_dict):
-    """We are given a digraph (most likely a digraph of Lights Out labelings) with adjacency dictionary "adj_digraph" whose
-vertices have a parity dictionary "parity_dict" whose keys are the vertices and whose keys are either 0 (even) or 1
-(not_even).  This function finds, if possible, all undirected paths whose beginning and ending vertices are even and whose
-interior vertices are not-even.  If such a path is possible, the function returns a list of all paths (with vertices in order).
-If not, the function returns the Boolean value "false"."""
-    path_list = list() # There are no paths in the list yet.
-    for vertex in adj_digraph: #  Look through each vertex in the graph.
-        #is labeling_dict supposed to be parity_dict
-        if labeling_dict[vertex] == 0: # We only want starting vertices that are even.
-            current_path =[vertex] # Put "vertex" at the beginning of the path list.
-            current_length = 0 # No edges in the path yet, so the path length is currently zero.
-            for adj_vertex in adj_digraph[vertex]: # Look at all the vertices adjacent to "vertex" for an odd vertex.
-                if adj_vertex == 1:
-                    current_path.append(adj_vertex) # Add "adj_vertex" to the path.
-                    current_length = 1 # Keep track of the length of the path.
-                    current_vertex = adj_vertex
-                    while end is not here: # We have to figure out an exit condition here.
-                        for adj_vertex in adj_digraph[current_vertex]: # Look at every vertex adjacent to "current_vertex".
-                            if adj_vertex == 1:
-                                current_path.append(adj_vertex)
-                                current_length += 1
-                                current_vertex = adj_vertex
-                            else:
-                                end_path = current_path # We are almost at the end of our path.
-                                end_path.append(adj_vertex) # Add on the even vertex to the end of the path.
-                                path_list.append(end_path)
 
 def findEvenDetours(adj_digraph, even_vertex1, even_vertex2):
     """Given two vertices "even_vertex1" and "even_vertex2" in the digraph, the function finds, if possible, an undirected path

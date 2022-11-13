@@ -16,9 +16,9 @@ def GraphLightsOut_runner():
     adj_dict = GraphLightsOut.constPathGraph(5)
     neighbor_mat = GraphLightsOut.dictionaryToMatrix(GraphLightsOut.constPathGraph(5))
     #matrixReduceModulo is not a method/function. 
-    reduced_mat = matrixReduceModulo(GraphLightsOut.dictionaryToMatrix(GraphLightsOut.constPathGraph(5)), 3)
+    #reduced_mat = matrixReduceModulo(GraphLightsOut.dictionaryToMatrix(GraphLightsOut.constPathGraph(5)), 3)
     print(neighbor_mat)
-    print(reduced_mat)
+    #print(reduced_mat)
     print(GraphLightsOut.decodeDirectProduct(GraphLightsOut.constCyclicGroup(2),GraphLightsOut.constCyclicGroup(3),4))
 
 #Code from LightsOutTrap
@@ -29,9 +29,9 @@ def LightsOutTrap_runner():
 
     adj_dict = LightsOutTrap.constPathGraph(5)
     neighbor_mat = GraphLightsOut.dictionaryToMatrix(LightsOutTrap.constPathGraph(5))
-    reduced_mat = GraphLightsOut.matrixReduceModulo(GraphLightsOut.dictionaryToMatrix(LightsOutTrap.constPathGraph(5)), 3)
+    #reduced_mat = GraphLightsOut.matrixReduceModulo(GraphLightsOut.dictionaryToMatrix(LightsOutTrap.constPathGraph(5)), 3)
     print(neighbor_mat)
-    print(reduced_mat)
+    #print(reduced_mat)
 
 #Code from MatrixReduction
 def MatrixReduction_runner():
