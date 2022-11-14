@@ -90,35 +90,27 @@ class Graph(object):
     def removeVertex(self, vertex_name):
         del self.adj_dict[vertex_name]
 
-    def editVertexValue(vertex_name):
+    def editVertexValue(self, vertex_name, new_value):
+        self.vertex_values[vertex_name] = (new_value) % self.max_vertex_value
+
+    def addOneToVertexValue(self, vertex_name):
+        for key in self.vertex_values:
+            if key == vertex_name:
+                self.vertex_values[key] = (self.vertex_values[key] + 1) % self.max_vertex_value
+                return    
+
+    def changeConnection(self, connection_change, new_connection):
         pass
 
-    def editVertexConnection(vertex_name, new_start, new_finish):
-        pass
+    def toggleVertex(self, vertex_name):
+        #toggle desired vertex
+        self.addOneToVertexValue(vertex_name)
 
-    def checkAdjacency(self):
-        # checks consistency of adjacency matrix
-        result = True
-        for x in self.adj.dict:
-            for vert in self.adj.dict[x]:
-                if vert not in self.adj.dict:
-                    result = False
-                    print ("Vertex " + str(vert) + " is adjacent to " + str(x) + " but is not a key.")
-                    break
-                if x not in self.adj.dict[vert]:
-                    result = False
-                    print ("Vertex " + str(x) + " is missing from key " + str(vert) + ".")
-        for x in self.adj.dict:
-                if x in self.adj_dict[x]:
-                    result = False
-                    print ("You have a loop on vertex" + str(x) + ".")
-        return result
-
-    def changeConnection(self):
-        pass
-
-    def toggleVertex(self):
-        pass
+        #toggle all adjacent verticies
+        edges_of_vertex = self.parseEdges(vertex_name)
+        #['A', "B", ...]
+        for vertex in edges_of_vertex:
+            self.addOneToVertexValue(vertex)
 
     def checkWinner(self):
         for key in self.vertex_values:
@@ -126,20 +118,12 @@ class Graph(object):
                 return False
         return True
 
-
 def main_run():
     graph = Graph(1)
-    print("*************************")
     graph.addVertex("A", "B", 1)
-    print("*************************")
     graph.addVertex("A")
-    print("create A")
     graph.addVertex("B", "A", 0)
-    print("create b")
     graph.addVertex("C", "A,B")
-    print("create c")
-    print("*************************")
     graph.addVertex("A", "C", 1)
-    print("*************************")
 
 main_run()
