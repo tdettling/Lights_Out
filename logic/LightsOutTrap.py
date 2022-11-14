@@ -15,7 +15,6 @@ Groups are represented by integers starting at zero.  The group structure is
 stored in a Cayley table (matrix)."""
 
 import itertools
-import logic.GraphLightsOut as GraphLightsOut 
 
 def initializeAdjDict(num_vertices):
     """Returns an adjacency dictionary (for directed or undirected graph) on "num_vertices" vertices, each having an empty adjacency list"""
@@ -117,6 +116,28 @@ The input "parts" is a list of the sizes of the parts of the partition of vertic
                 constEdge(adj_graph, first_vert, sec_vert) # Connects "first_vert" to every vertex in every part past the one "first_vert" is in.
             first_vert += 1 # Changes "first_vert" to the next vertex in the first part.
     return adj_graph
+
+def componentMatch(fixed_labeling, fixed_component, zero_component, num_labels):
+    """The labeling "fixed_labeling" is in the weakly connected component given by "fixed_component".  This
+    function subtracts "fixed_labeling" (as a vector) from every labeling in ``fixed_component".  The
+    resulting list is then compared to the weakly connected component "zero_component" to see if it matches it.
+R    eturns "true" if there is a match and "false" otherwise."""
+    new_list = list() # This will become the list we get by adding "fixed_labeling" to every labeling in the component.
+    for labeling in fixed_component: # Take each labeling in the component.
+        comparison_labeling_list = list() # We will initially make the labeling a list.
+        for index, label in enumerate(labeling):
+            comparison_labeling_list.append((label - fixed_labeling[index]) % num_labels) # Subtract "fixed_labeling" from it.
+        comparison_labeling = tuple(comparison_labeling_list) # Turn the labeling back into a tuple.
+    new_list.append(comparison_labeling)
+    for labeling in new_list:
+        if labeling in zero_component: # We check to see if each element of "new_list" is also in "zero_component".
+            match = True # This indicates that it can still be a match.
+        else:
+            match = False # This happens when we do not have a match.
+            break
+    return match # This will be "true" if there is a match and "false" otherwise.
+
+
 
 def constCaterGraph(spine):
     """Constructs adjacency matrix for a subdivided caterpillar tree.  The input
@@ -335,6 +356,20 @@ that represents the weakly connected component containing the vertex "target_ver
             break
     return [component_list, target_component]
 
+def findTrap(adj_digraph, target_vertex, target_component):
+    """The input "adj_digraph" is the adjacency dictionary of a digraph.  The list "component list" is the list of
+(weakly) connected components of the the digraph. The integer "zero_component" is a specific vertex of the digraph,
+and "zero_component" is the index of the connected component containing "zero_vertex". The function determines whether
+or not there is a directed path between every vertex in "zero_component" and "zero_vertex".  The function returns a
+list of all vertices that cannot be the beginning of a directed path ending in "zero_vertex" (if it exists).
+If no such vertex exists, the function returns "false".  In practical terms, The function determines whether or not every labeling
+is winnable in the component containing the labeling where every vertex has label zero."""
+    trap_verts = list() # This is a list that will house all non-winnable vertices.
+    for vertex in target_component: # Search through all vertices in the connected component.
+        if target_vertex not in constDownstream(adj_digraph, vertex): # In this case, there is no path between "vertex" and "zero_vertex".
+            trap_verts.append(vertex) # Add "vertex" to our list of non-winnable vertices.
+    return trap_verts
+
 def componentCardinality(component_list):
     """Takes a list of connected components of a digraph (where each component is given as an adjacency dictionary),
 and determines the cardinality of each list.  If all connected components are the same cardinality, the function returns that
@@ -385,7 +420,7 @@ Conjecture are written to the file."""
     component_list = component_info[0] # This is the list of weakly connected components.
     components_size = componentCardinality(component_list) # This gives us the cardinalities of the weakly connected components.
     zero_component = component_list[component_info[1]] # This is the component containing the zero labeling.
-    traps = GraphLightsOut.findTrap(adj_digraph, zero_labeling, zero_component) # This is a list of all unwinnable labelings in the zero component.
+    traps = findTrap(adj_digraph, zero_labeling, zero_component) # This is a list of all unwinnable labelings in the zero component.
     my_file = open('Graph' + str(name) + 'Labels' + str(num_labels), 'w') # The name of our file will be the name of the graph and the number of labels.
     my_file.write('Graph: ' + name + '\n') # Write in the name of the graph.
     my_file.write('Number of Labels: ' + str(num_labels) + '\n') # Write in the number of labels.
@@ -403,7 +438,7 @@ Conjecture are written to the file."""
     counterexamples = list() # This is a list of counterexamples to Vasily's Conjecture.
     for component in component_list: # We need to check each component to see if the conjecture is true or false.
         for labeling in component: # We need to check each labeling to see whether or not they all work.
-            match = GraphLightsOut.componentMatch(labeling, component, zero_component, num_labels) # This checks for a match.
+            match = componentMatch(labeling, component, zero_component, num_labels) # This checks for a match.
             if match is False:
                 counterexamples.append(component) # If match is "false", "component" is included in the list of counterexamples.
                 break # Once we find one counterexample in the component, there is no need to search for more.  Skip to the next component.
