@@ -43,6 +43,29 @@ class Graph(object):
             print (vert)
 
 
+    def containsVertexInValues(self, vertex):
+        contains = False
+        for key in self.vertex_values:
+            if key == vertex:
+                contains = True
+        return contains
+
+    def containsVertexInEdgeConnectionDict(self, vertex):
+        contains = False
+        for key in self.edge_dict:
+            if key == vertex:
+                contains = True
+        return contains
+
+    def containsConnection(self, vertex, connection):
+        contains = False
+        for key in self.edge_dict:
+            if vertex == key:
+                if connection in self.edge_dict[key]:
+                    contains = True
+        return contains 
+
+
     def getConnections(self, vertex_name):
         if vertex_name not in self.edge_dict:
             self.printError(3)
@@ -73,6 +96,12 @@ class Graph(object):
             edgeList = edges.split(',')
             return edgeList
 
+    def addConnection(self, vertex_name, adjacent_vertex):
+        for key in self.edge_dict:
+            if key == vertex_name:
+                self.edge_dict[key] = self.edge_dict[key] + adjacent_vertex
+                print(str(self.edge_dict[key]))
+
 
     def addVertex(self, vertex_name, connection = "null", vertex_value = 1):
         if connection not in self.edge_dict and connection != "null":
@@ -82,6 +111,10 @@ class Graph(object):
             if key == vertex_name:
                 self.printError(4)
                 return
+        #edgeSet = 
+        self.vertex_values[vertex_name] == vertex_value
+        self.addConnection(vertex_name, )
+        
             
         self.vertex_values[vertex_name] = vertex_value
         self.edge_dict[vertex_name] = connection
@@ -120,10 +153,8 @@ class Graph(object):
 
 def main_run():
     graph = Graph(1)
-    graph.addVertex("A", "B", 1)
-    graph.addVertex("A")
-    graph.addVertex("B", "A", 0)
-    graph.addVertex("C", "A,B")
-    graph.addVertex("A", "C", 1)
+    graph.addVertex('A')
+    graph.addVertex('B', 'A', 1)
 
 main_run()
+print("done")

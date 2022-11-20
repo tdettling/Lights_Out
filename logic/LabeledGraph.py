@@ -11,7 +11,7 @@ that are either integers modulo some integer k or integers representing group
 elements as described below.  It also includes a boolean variable "win" that
 tells us if the "Lights Out" game has been won."""
 
-import logic.Graph as Graph
+import main_AND_test.Graph as Graph
 
 class LabeledGraph(Graph):
     """Creates a labeled graph, and includes methods that can be used in the
