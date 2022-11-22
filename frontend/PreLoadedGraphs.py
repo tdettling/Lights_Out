@@ -1,4 +1,4 @@
-import main_AND_test.Graph as Graph
+import Graph as Graph
 
 def createOptionOne():
     pass
