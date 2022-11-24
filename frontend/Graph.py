@@ -24,7 +24,7 @@ error_dict = {
 class Graph(object):
     """Creates a graph, describing the number of vertices (num_vert) as well as
         the edges (adj_mat or edge_set)"""
-    def __init__(self,max_vertex_value):
+    def __init__(self,max_vertex_value=2):
         # number of vertices, adjacency matrix, edge set
         self.edge_dict = {"A": ['B'], 
                           "B": ['C'],
@@ -37,6 +37,11 @@ class Graph(object):
 
 
     def addSetGraph(self, edge_dict, vertex_values_dict, mod):
+        self.edge_dict.clear()
+        self.edge_dict = {}
+        self.vertex_values.clear()
+        self.vertex_values = {}
+
         self.edge_dict = edge_dict
         self.vertex_values = vertex_values_dict
         self.max_vertex_value = mod
@@ -139,10 +144,7 @@ class Graph(object):
         self.vertex_values[vertex_name] = (new_value) % self.max_vertex_value
 
     def addOneToVertexValue(self, vertex_name):
-        for key in self.vertex_values:
-            if key == vertex_name:
-                self.vertex_values[key] = (self.vertex_values[key] + 1) % self.max_vertex_value
-                return    
+        self.vertex_values[vertex_name] = (self.vertex_values[vertex_name] + 1) % self.max_vertex_value  
 
     def changeConnection(self, vertex, connection_change, new_connection):
         for key in self.edge_dict:
@@ -162,10 +164,9 @@ class Graph(object):
         #toggle desired vertex
         self.addOneToVertexValue(vertex_name)
         #toggle all adjacent verticies
-        edges_of_vertex = self.parseEdges(vertex_name)
-        #['A', "B", ...]
-        for vertex in edges_of_vertex:
-            self.addOneToVertexValue(vertex)
+        for edge in self.edge_dict[vertex_name]:
+            edge_str = str(edge)
+            self.addOneToVertexValue(edge_str)
 
     def checkWinner(self):
         for key in self.vertex_values:
@@ -182,6 +183,9 @@ class Graph(object):
             edges = str(self.parseEdges(key))
             temp_string = "Vertex: " + node + " is connected to: " + edges
             print(temp_string)
+
+        for vertex in self.vertex_values:
+            print("Vertex " + str(vertex) + " has value " + str(self.vertex_values[vertex]))
 
 #main_run()
 print("done")

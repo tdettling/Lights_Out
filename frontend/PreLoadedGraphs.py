@@ -15,8 +15,9 @@ def createOptionOne():
                                "E": 1,
                                "F": 1}
     g.addSetGraph(temp_edge_dict, temp_vertex_values_dict, 2)
-
+    g.printGraph()
     return g
+
 
 def createOptionTwo():
     g = Graph(2)

@@ -111,6 +111,9 @@ def displayGame():
   draw_text("Press SPACE to pause", font, TEXT_COL, 160, 250)
   return
 
+def drawGameGraphOnScreen(graph):
+  pass
+
 '''
 SETUP LOOP
 '''
