@@ -11,6 +11,10 @@ that are either integers modulo some integer k or integers representing group
 elements as described below.  It also includes a boolean variable "win" that
 tells us if the "Lights Out" game has been won."""
 
+
+
+
+
 error_dict = {
     1 : "Invalid Input",
     2 : "Connection(s) does not exist",
@@ -22,10 +26,20 @@ class Graph(object):
         the edges (adj_mat or edge_set)"""
     def __init__(self,max_vertex_value):
         # number of vertices, adjacency matrix, edge set
-        self.edge_dict = {}
+        self.edge_dict = {"A": ['B'], 
+                          "B": ['C'],
+                          "C": ['A']}
         self.max_vertex_value = max_vertex_value
-        self.vertex_values = {}
+        self.vertex_values = {"A": 1, 
+                              "B": 0,
+                              "C": 0}
         self.throw_error = "No Error Present"
+
+
+    def addSetGraph(self, edge_dict, vertex_values_dict, mod):
+        self.edge_dict = edge_dict
+        self.vertex_values = vertex_values_dict
+        self.max_vertex_value = mod
         
     def printError(self, error_code):
         global error_dict
@@ -83,42 +97,40 @@ class Graph(object):
             return edgeSet
 
     def parseEdges(self, vertex_name):
+        edgeList = ""
         if vertex_name in self.edge_dict:
             edges = self.edge_dict[vertex_name]
         else:
             self.printError(3)
             return
 
-        if edges == "null":
+        if len(edges) == 0:
             self.printError(2)
             return
         else: 
-            edgeList = edges.split(',')
+            for edge in edges:
+                edgeList = edgeList + str(edge)
             return edgeList
 
-    def addConnection(self, vertex_name, adjacent_vertex):
+    def addConnectionForeExsistingNode(self, vertex_name, adjacent_vertex):
         for key in self.edge_dict:
             if key == vertex_name:
-                self.edge_dict[key] = self.edge_dict[key] + adjacent_vertex
+                self.edge_dict[key].append(adjacent_vertex)
                 print(str(self.edge_dict[key]))
 
 
-    def addVertex(self, vertex_name, connection = "null", vertex_value = 1):
-        if connection not in self.edge_dict and connection != "null":
-            print("fixme")
+    def addVertex(self, vertex_name, connection = [], vertex_value = 1):
+        if self.containsConnection(vertex_name, connection):
+            print("connection")
             return
-        for key in self.vertex_values:
-            if key == vertex_name:
-                self.printError(4)
-                return
+        if self.containsVertexInEdgeConnectionDict(vertex_name) or self.containsVertexInValues(vertex_name):
+            print("vertex")
+            return
         #edgeSet = 
-        self.vertex_values[vertex_name] == vertex_value
-        self.addConnection(vertex_name, )
-        
-            
+        #temp_vertex_name = str(vertex_name)    
         self.vertex_values[vertex_name] = vertex_value
+        #self.addConnection(vertex_name, connection)
         self.edge_dict[vertex_name] = connection
-        
         
     def removeVertex(self, vertex_name):
         del self.adj_dict[vertex_name]
@@ -132,13 +144,23 @@ class Graph(object):
                 self.vertex_values[key] = (self.vertex_values[key] + 1) % self.max_vertex_value
                 return    
 
-    def changeConnection(self, connection_change, new_connection):
-        pass
+    def changeConnection(self, vertex, connection_change, new_connection):
+        for key in self.edge_dict:
+            if key == vertex:
+                if len(new_connection) == 0:
+                    temp_connection_list = self.edge_dict[key]
+                    temp_connection_list.remove(connection_change)
+                    self.edge_dict[key] = temp_connection_list
+                elif connection_change in self.edge_dict[key]:
+                    temp_connection_list = self.edge_dict[key]
+                    temp_connection_list.remove(connection_change)
+                    temp_connection_list.append(new_connection)
+                    self.edge_dict[key] = temp_connection_list
+
 
     def toggleVertex(self, vertex_name):
         #toggle desired vertex
         self.addOneToVertexValue(vertex_name)
-
         #toggle all adjacent verticies
         edges_of_vertex = self.parseEdges(vertex_name)
         #['A', "B", ...]
@@ -151,10 +173,15 @@ class Graph(object):
                 return False
         return True
 
-def main_run():
-    graph = Graph(1)
-    graph.addVertex('A')
-    graph.addVertex('B', 'A', 1)
+    def printGraph(self):
+        temp_string = ""
+        node = ""
+        edges = ""
+        for key in self.edge_dict:
+            node = str(key)
+            edges = str(self.parseEdges(key))
+            temp_string = "Vertex: " + node + " is connected to: " + edges
+            print(temp_string)
 
 #main_run()
 print("done")

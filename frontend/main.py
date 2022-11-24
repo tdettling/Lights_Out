@@ -1,3 +1,4 @@
+from operator import truediv
 from turtle import pos
 import pygame
 import buttonMenu
@@ -29,8 +30,10 @@ pygame.display.set_caption("Main Menu")
 
 #game variables
 game_paused = False
-menu_state = "main"
+paused_menu_state = "main"
 setup_menu = True
+setup_menu_state = "main"
+
 #define fonts
 font = pygame.font.SysFont("arialblack", 40)
 
@@ -49,6 +52,7 @@ back_img = pygame.image.load('images/button_back.png').convert_alpha()
 #load new images
 choosePresetGraph_img = pygame.image.load('images/button_ChoosePresetGraph.png').convert_alpha()
 createNewGraph_img = pygame.image.load('images/button_CreateNewGraph.png').convert_alpha()
+testGraphONE_img = pygame.image.load("images/button_testGraphOne.png").convert_alpha()
 
 
 #create menu button instances
@@ -61,9 +65,11 @@ keys_button = buttonMenu.Button(246, 325, keys_img, 1)
 back_button = buttonMenu.Button(332, 450, back_img, 1)
 
 #create setup buttons
-choosePresetGraph_button = buttonMenu.Button(304, 125, choosePresetGraph_img, 0.5)
-createNewGraph_button = buttonMenu.Button(297, 250, createNewGraph_img, 0.5)
+choosePresetGraph_button = buttonMenu.Button(160, 225, choosePresetGraph_img, 0.4)
+createNewGraph_button = buttonMenu.Button(160, 380, createNewGraph_img, 0.4)
 
+#create preset graph buttons
+choosePresetONE_button = buttonMenu.Button(297, 250, testGraphONE_img, 0.7)
 
 def getNextVertexName():
   global nameIndex
@@ -96,33 +102,52 @@ def choosePreLoadedGraph(buttonChoice):
   global gameGraph
   gameGraph = preloadedOptions.chooseOption(buttonChoice)
 
-def gameSetupMenu():
-  #display buttons here
-  draw_text("Press TAB to pause", font, TEXT_COL, 160, 250)
-  if choosePresetGraph_button.draw(screen):
-    menu_state = "chooseGraph"
-  if createNewGraph_button.draw(screen):
-    menu_state = "createGraph"
-  setup_menu = False
-
 def displayPreLoadedgraphs():
-  pass
+  #if choosePresetONE_button.draw(screen):
+    draw_text("You hit the button", font, TEXT_COL, 160, 250)
+    print("hitting preload one")
 
 def displayGame():
   draw_text("Press SPACE to pause", font, TEXT_COL, 160, 250)
+  return
 
+'''
+SETUP LOOP
+'''
+setupRUN = True
+while setupRUN:
+  screen.fill((52, 78, 91))
+  if setup_menu_state == "main":
+    draw_text("Choose:", font, TEXT_COL, 320, 50)
+    if choosePresetGraph_button.draw(screen):
+      setup_menu_state = "chooseGraph"
 
+    if createNewGraph_button.draw(screen):
+      setup_menu_state = "createGraph"
+    
+  elif setup_menu_state == "chooseGraph":
+      if choosePresetONE_button.draw(screen):
+        print("hitting preload one")
+        setupRUN = False
+  else:
+    if audio_button.draw(screen):
+      setupRUN = False
+
+  for event in pygame.event.get():
+    #if event.type == pygame.KEYDOWN:
+    if event.type == pygame.QUIT:
+      run = False
+      setupRUN = False
+      pygame.quit()
+  pygame.display.update()
 
 
 '''GAME LOOP'''
 run = True
 while run:
   screen.fill((52, 78, 91))
-
-  #check if game is paused
-  if setup_menu:
-    gameSetupMenu()
-  elif game_paused == True:
+    #setup_menu == False
+  if game_paused == True:
     #check menu state
     if paused_menu_state == "main":
       #draw pause screen buttons
@@ -151,11 +176,8 @@ while run:
     if event.type == pygame.KEYDOWN:
       if event.key == pygame.K_SPACE:
         game_paused = True
-      if event.key==pygame.K_TAB:
-        setup_menu = False
     if event.type == pygame.QUIT:
       run = False
-
   pygame.display.update()
 
 
