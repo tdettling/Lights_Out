@@ -6,10 +6,10 @@ class TestGraph(unittest.TestCase):
 
     def test_geenral(self):
         g = Graph(2)
-        g.addVertex("D", 'A', 0)
+        self.assertTrue(g.addVertex("D", 'A', 0))
         #print("test a graph: ")
         #g.printGraph()
-        self.assertTrue(g.containsVertexInEdgeConnectionDict('D'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict("D"))
 
         g.addConnectionForeExsistingNode("A", 'C')
         self.assertTrue(g.containsConnection("D", 'A'))
@@ -110,6 +110,59 @@ class TestGraph(unittest.TestCase):
         self.assertEqual(g.vertex_values["F"],0, "TOGGLING E: Vertex F should be 0")
         self.assertTrue(g.checkWinner())
 
+    def test_invalid_connections(self):
+        g = Graph(2)
+        temp_edge_dict = {"A": ['B'],
+                      "B": ['C'],
+                      "C": ['D'],
+                      "D": ['E'],
+                      "E": ['F'],
+                      "F": []}
+        temp_vertex_values_dict = {"A": 1,
+                               "B": 1,
+                               "C": 1,
+                               "D": 1,
+                               "E": 1,
+                               "F": 1}
+        g.addSetGraph(temp_edge_dict, temp_vertex_values_dict, 2)
+
+        self.assertFalse(g.containsConnection("A", 'A'))
+        self.assertFalse(g.containsConnection("A", 'C'))
+        self.assertFalse(g.containsConnection("A", 'D'))
+        self.assertFalse(g.containsConnection("A", 'E'))
+        self.assertFalse(g.containsConnection("A", 'F'))
+
+        self.assertFalse(g.containsConnection("B", 'B'))
+        self.assertFalse(g.containsConnection("B", 'A'))
+        self.assertFalse(g.containsConnection("B", 'D'))
+        self.assertFalse(g.containsConnection("B", 'E'))
+        self.assertFalse(g.containsConnection("B", 'F'))
+
+        self.assertFalse(g.containsConnection("C", 'A'))
+        self.assertFalse(g.containsConnection("C", 'B'))
+        self.assertFalse(g.containsConnection("C", 'C'))
+        self.assertFalse(g.containsConnection("C", 'E'))
+        self.assertFalse(g.containsConnection("C", 'F'))
+
+        self.assertFalse(g.containsConnection("D", 'D'))
+        self.assertFalse(g.containsConnection("D", 'A'))
+        self.assertFalse(g.containsConnection("D", 'B'))
+        self.assertFalse(g.containsConnection("D", 'C'))
+        self.assertFalse(g.containsConnection("D", 'F'))
+
+        self.assertFalse(g.containsConnection("E", 'E'))
+        self.assertFalse(g.containsConnection("E", 'A'))
+        self.assertFalse(g.containsConnection("E", 'B'))
+        self.assertFalse(g.containsConnection("E", 'C'))
+        self.assertFalse(g.containsConnection("E", 'D'))
+       
+        self.assertFalse(g.containsConnection("F", 'A'))
+        self.assertFalse(g.containsConnection("F", 'B'))
+        self.assertFalse(g.containsConnection("F", 'C'))
+        self.assertFalse(g.containsConnection("F", 'D'))
+        self.assertFalse(g.containsConnection("F", 'E'))
+        self.assertFalse(g.containsConnection("F", 'F'))
+        
 
 
 if __name__ == '__main__':

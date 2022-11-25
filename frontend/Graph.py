@@ -15,6 +15,9 @@ tells us if the "Lights Out" game has been won."""
 
 
 
+from pickle import FALSE
+
+
 error_dict = {
     1 : "Invalid Input",
     2 : "Connection(s) does not exist",
@@ -61,6 +64,10 @@ class Graph(object):
         for vert in self.edge_dict:
             print (vert)
 
+    def containsVertexFromEdgeList(self, vertexForList, comparisonVertex):
+        pass
+        
+
 
     def containsVertexInValues(self, vertex):
         contains = False
@@ -86,6 +93,9 @@ class Graph(object):
 
 
     def getConnections(self, vertex_name):
+        if not self.containsVertexInEdgeConnectionDict(vertex_name) or not self.containsVertexInValues(vertex_name):
+            return False
+
         if vertex_name not in self.edge_dict:
             self.printError(3)
             return -1
@@ -102,6 +112,9 @@ class Graph(object):
             return edgeSet
 
     def parseEdges(self, vertex_name):
+        if not self.containsVertexInEdgeConnectionDict(vertex_name) or not self.containsVertexInValues(vertex_name):
+            return False
+
         edgeList = ""
         if vertex_name in self.edge_dict:
             edges = self.edge_dict[vertex_name]
@@ -118,35 +131,46 @@ class Graph(object):
             return edgeList
 
     def addConnectionForeExsistingNode(self, vertex_name, adjacent_vertex):
+        if not self.containsVertexInEdgeConnectionDict(vertex_name) or not self.containsVertexInValues(vertex_name) \
+            or self.containsConnection(vertex_name, adjacent_vertex):
+            return False
         for key in self.edge_dict:
             if key == vertex_name:
                 self.edge_dict[key].append(adjacent_vertex)
                 print(str(self.edge_dict[key]))
+        return True
 
-
+#FIXME
     def addVertex(self, vertex_name, connection = [], vertex_value = 1):
-        if self.containsConnection(vertex_name, connection):
-            print("connection")
-            return
-        if self.containsVertexInEdgeConnectionDict(vertex_name) or self.containsVertexInValues(vertex_name):
-            print("vertex")
-            return
-        #edgeSet = 
-        #temp_vertex_name = str(vertex_name)    
+        if self.containsVertexInEdgeConnectionDict(vertex_name) or self.containsVertexInValues(vertex_name) \
+            or self.containsConnection(vertex_name, connection):
+            return False  
+        if connection in self.edge_dict[vertex_name] and len(connection) != 0:
+            return False
+
         self.vertex_values[vertex_name] = vertex_value
-        #self.addConnection(vertex_name, connection)
         self.edge_dict[vertex_name] = connection
+        return True
         
     def removeVertex(self, vertex_name):
+        if not self.containsVertexInEdgeConnectionDict(vertex_name) or not self.containsVertexInValues(vertex_name):
+            return False
         del self.adj_dict[vertex_name]
 
     def editVertexValue(self, vertex_name, new_value):
         self.vertex_values[vertex_name] = (new_value) % self.max_vertex_value
 
     def addOneToVertexValue(self, vertex_name):
+        if not self.containsVertexInEdgeConnectionDict(vertex_name) or not self.containsVertexInValues(vertex_name):
+            return False
         self.vertex_values[vertex_name] = (self.vertex_values[vertex_name] + 1) % self.max_vertex_value  
+        return True
 
     def changeConnection(self, vertex, connection_change, new_connection):
+        if not self.containsConnection(vertex, connection_change) or not self.containsVertexInEdgeConnectionDict(vertex) \
+            or not self.containsVertexInValues:
+            return False
+
         for key in self.edge_dict:
             if key == vertex:
                 if len(new_connection) == 0:
@@ -158,15 +182,19 @@ class Graph(object):
                     temp_connection_list.remove(connection_change)
                     temp_connection_list.append(new_connection)
                     self.edge_dict[key] = temp_connection_list
+        return True
 
 
     def toggleVertex(self, vertex_name):
+        if not self.containsVertexInEdgeConnectionDict(vertex_name) or not self.containsVertexInValues(vertex_name):
+            return False
         #toggle desired vertex
         self.addOneToVertexValue(vertex_name)
         #toggle all adjacent verticies
         for edge in self.edge_dict[vertex_name]:
             edge_str = str(edge)
             self.addOneToVertexValue(edge_str)
+        return True
 
     def checkWinner(self):
         for key in self.vertex_values:
