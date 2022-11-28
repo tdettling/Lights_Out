@@ -1,6 +1,9 @@
 import unittest
+
+import frontend 
 from Graph import Graph
 import PreLoadedGraphs
+
 
 class TestGraph(unittest.TestCase):
 
@@ -110,7 +113,7 @@ class TestGraph(unittest.TestCase):
         self.assertEqual(g.vertex_values["F"],0, "TOGGLING E: Vertex F should be 0")
         self.assertTrue(g.checkWinner())
 
-    def test_invalid_connections(self):
+    def test_invalid_connections_PresetGraphONE(self):
         g = Graph(2)
         temp_edge_dict = {"A": ['B'],
                       "B": ['C'],
@@ -163,6 +166,7 @@ class TestGraph(unittest.TestCase):
         self.assertFalse(g.containsConnection("F", 'E'))
         self.assertFalse(g.containsConnection("F", 'F'))
         
+    
 
 
 if __name__ == '__main__':

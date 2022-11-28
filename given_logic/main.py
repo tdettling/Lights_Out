@@ -8,17 +8,29 @@ import PreLoadedGraphs as preloadedOptions
 import CreateNewGraph as drawGraph
 
 global possibleNames 
-possibleNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G' , 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+possibleNames = ["A", "B", "C", "D", "E", "F", "G" , "H", "I", "J", "K", "L", "M", \
+                 "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
 global nameIndex
-nameIndex = 0
+nameIndex = -1
 
-global vertexLocations
-vertexLocations = {}
+global vertexButtons
+vertexButtons = {}
+
+global addVertexCurrentIndex
+addVertexCurrentIndex = -1
+
+RADIUS = 20
+ZEROINTENSITY = 0
+MAXINTENSITY = 255
+
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
 
 pygame.init()
 
 #gameGraph = Graph(2)
+global gameGraph 
 gameGraph = Graph(2)
 
 #create game window
@@ -54,6 +66,13 @@ choosePresetGraph_img = pygame.image.load('images/button_ChoosePresetGraph.png')
 createNewGraph_img = pygame.image.load('images/button_CreateNewGraph.png').convert_alpha()
 testGraphONE_img = pygame.image.load("images/button_testGraphOne.png").convert_alpha()
 
+#load images for on/off for self draw
+on_img = pygame.image.load("images/button_on.png").convert_alpha()
+off_img = pygame.image.load("images/button_off.png").convert_alpha()
+
+#load image for start game
+startGame_img = pygame.image.load("images/button_startGame.png").convert_alpha()
+
 
 #create menu button instances
 resume_button = buttonMenu.Button(304, 125, resume_img, 1)
@@ -70,6 +89,9 @@ createNewGraph_button = buttonMenu.Button(160, 380, createNewGraph_img, 0.4)
 
 #create preset graph buttons
 choosePresetONE_button = buttonMenu.Button(297, 250, testGraphONE_img, 0.7)
+
+#create start game button for self draw
+startGame_button = buttonMenu.Button(332, 450, startGame_img, 1)
 
 def getNextVertexName():
   global nameIndex
@@ -89,14 +111,40 @@ def draw_text(text, font, text_col, x, y):
 def drawEdge(fromVertex, toVertex):
   pass
 
-def drawVertex():
-  #draw the drawEdge on the screen 
-  nameOfVertex = getNextVertexName()
-  gameGraph.addVertex(nameOfVertex)
-  pass
+def toggleButtonVertex(button):
+  global vertexButtons
+  vertex_name = 
 
 def chooseDrawGraph():
-  pass
+  global possibleNames
+  global vertexButtons
+
+  drawCircle_mode = True
+  
+  while drawCircle_mode:
+    if startGame_button.draw(screen):
+      drawCircle_mode = False
+      return
+    #get pos of mouse
+    pos = pygame.mouse.get_pos()
+    for event in pygame.event.get():
+      if event.type == pygame.MOUSEBUTTONDOWN:
+        #add vertex with value 1
+        nameOfVertex = possibleNames[nameIndex + 1]
+        gameGraph.addVertex(nameOfVertex)
+
+        #Split pos into x= and y=
+        x_pos, y_pos = pos
+        on_button = buttonMenu.Button(x_pos, y_pos, on_img, 1)
+        vertexButtons[on_button] = nameOfVertex
+    
+        #if they click the new buttion
+        #draw button
+        if on_button.draw(screen):
+          
+
+        #toggle that vertex
+
 
 def choosePreLoadedGraph(buttonChoice):
   global gameGraph

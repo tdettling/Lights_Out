@@ -12,12 +12,6 @@ elements as described below.  It also includes a boolean variable "win" that
 tells us if the "Lights Out" game has been won."""
 
 
-
-
-
-from pickle import FALSE
-
-
 error_dict = {
     1 : "Invalid Input",
     2 : "Connection(s) does not exist",
@@ -145,8 +139,6 @@ class Graph(object):
         if self.containsVertexInEdgeConnectionDict(vertex_name) or self.containsVertexInValues(vertex_name) \
             or self.containsConnection(vertex_name, connection):
             return False  
-        if connection in self.edge_dict[vertex_name] and len(connection) != 0:
-            return False
 
         self.vertex_values[vertex_name] = vertex_value
         self.edge_dict[vertex_name] = connection
