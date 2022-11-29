@@ -23,13 +23,9 @@ class Graph(object):
         the edges (adj_mat or edge_set)"""
     def __init__(self,max_vertex_value=2):
         # number of vertices, adjacency matrix, edge set
-        self.edge_dict = {"A": ['B'], 
-                          "B": ['C'],
-                          "C": ['A']}
+        self.edge_dict = {}
         self.max_vertex_value = max_vertex_value
-        self.vertex_values = {"A": 1, 
-                              "B": 0,
-                              "C": 0}
+        self.vertex_values = {}
         self.throw_error = "No Error Present"
 
 
@@ -176,17 +172,19 @@ class Graph(object):
                     self.edge_dict[key] = temp_connection_list
         return True
 
+    def getListOfAdjacentVerticies(self, vertex):
+        list_temp = self.edge_dict[vertex]
+        return list_temp
 
     def toggleVertex(self, vertex_name):
         if not self.containsVertexInEdgeConnectionDict(vertex_name) or not self.containsVertexInValues(vertex_name):
-            return False
+            return -1
         #toggle desired vertex
         self.addOneToVertexValue(vertex_name)
         #toggle all adjacent verticies
         for edge in self.edge_dict[vertex_name]:
-            edge_str = str(edge)
-            self.addOneToVertexValue(edge_str)
-        return True
+            self.addOneToVertexValue(edge)
+        return 
 
     def checkWinner(self):
         for key in self.vertex_values:
