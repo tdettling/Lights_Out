@@ -100,9 +100,12 @@ def beginGame(root, gameGraph = Graph(2), preset_value = "null"):
                 F_btn.place(relx=.7, rely=.35, relheight=.06, relwidth=.06)
 
 
-                #vertex_button_dict = {"A": ,
-                            #"B": PresetTWO_btn,
-                            #"C": Prese}
+                vertex_button_dict = {"A": A_btn,
+                                      "B": B_btn,
+                                      "C": C_btn,
+                                      "D": D_btn,
+                                      "E": E_btn,
+                                      "F": F_btn}
 
                 #app.create_line(100,200,200,35, fill="green", width=5)
             case "option_two":

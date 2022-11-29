@@ -1,7 +1,8 @@
 from functools import partial
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import E, messagebox
 from tkinter import ttk
+from tracemalloc import start
 from turtle import bgcolor, onclick
 
 import PreLoadedGraphs
@@ -13,35 +14,101 @@ root.title("Lights Out! A Game on Directed Graphs")
 root.geometry("1500x1000")
 app = tk.Frame(root, background="#c7e7c9")
 app.place(relx=0, rely=0, relheight=1, relwidth=1)
+
 #	enter widgets here
+global vertex_button_dict
 vertex_button_dict = {}
 
+global game_graph
+game_graph = Graph(2)
 
-def resetScreen():
-    for child in app.winfo_children():
+global list_of_game_btns
+list_of_game_btns = []
+
+
+
+def resetScreen(frame_name):
+    for child in frame_name.winfo_children():
         child.destroy()
 
+def destoryWidget(widget):
+    for child in app.winfo_children():
+        if child == widget:
+            child.destroy()
 
-def determineButtonColor(buttonColor):
-    if buttonColor == "red":
+def toggleBTN(btn):
+    global vertex_button_dict
+    global game_graph
+    global list_of_game_btns
+
+    vertex_to_toggle = vertex_button_dict[btn]
+
+    edge_list = game_graph.edge_dict[vertex_to_toggle]
+
+    game_graph.toggleVertex(vertex_to_toggle)
+
+    #for child in app.winfo_children():
+        #if child == 
+    
+    toggleButtonColor(btn)
+    for wgd in app.winfo_children(): # all widgets 
+        try:
+            if wgd['text'] in edge_list:
+                toggleButtonColor(wgd['highlightbackground']) # change the background colour
+            else:
+                pass
+        except:
+            pass
+    #for button in vertex_button_dict:
+        #if vertex_button_dict[button] in edge_list:
+            #toggleButtonColor(button.cget('bg'))
+    game_graph.printGraph()
+    if game_graph.checkWinner:
+        #display a message saying the game has been won!
+        play_again = messagebox.askretrycancel('WINNER', 'You won! Would you like to play again?')
+        if play_again == 'yes':
+            pass
+        elif play_again == 'no':
+            pass
+        else:
+            messagebox.showerror('error', 'something went wrong')
+
+def toggleButtonColor(currentBtnColor):
+    if currentBtnColor == "red":
         return "blue"
     return "red"
 
-def toggleVertex(graph, vertex):
-    #toggle vertex
-    graph.toggleVertex(vertex)
-    #toggle button colors
-    listOfAdjVerticies = graph.getListOfAdjacentVerticies(vertex)
-    #for vertex in listOfAdjVerticies:
-        #button_to_change = 
-        #button_to_change.configure(bg = "red")
+#def createPresetGraphButtons():
+   
+#event handler
+def generatePresetGraph(preset_option):
+    game_graph_temp = Graph(2)
+    game_graph_temp = PreLoadedGraphs.chooseOption(preset_option)
+    #clear screen
+    resetScreen(app)
+    #Title on screem
 
-    #check for win!
 
-def createPresetGraphButtons():
-    #preset buttons are created here, seperation used for simplicity
-    PresetONE_btn = tk.Button(app, text="Preset One", width=25, height=5,\
-    activebackground = "black", activeforeground = "gray", command=partial(generatePresetGraph, "option_one"))
+def presetBTN_selected():
+    #clear screen
+    resetScreen(app)
+    #create labels
+    preset_display_label = tk.Label(
+        text="Please select form the following preset graph options: ",
+        activebackground = "black",
+        activeforeground = "gray",  # Set the background color to black
+    )
+    preset_display_label.place(relx=.2, rely=.05, relheight=.2, relwidth=.3)
+
+    #create 10 buttons, for the 10 options
+     #preset buttons are created here, seperation used for simplicity
+    PresetONE_btn = tk.Button(app, 
+    text="Preset One", 
+    width=25, 
+    height=5,
+    activebackground = "black", 
+    activeforeground = "gray", 
+    command=partial(beginGame, "option_one"))
     PresetONE_btn.place(relx=.2, rely=.25, relheight=.125, relwidth=.125)
 
     PresetTWO_btn = tk.Button(
@@ -144,38 +211,159 @@ def createPresetGraphButtons():
     )
     PresetTEN_btn.place(relx=.4, rely=.85, relheight=.125, relwidth=.125)
 
-#event handler
-def generatePresetGraph(preset_option):
-    game_graph_temp = Graph(2)
-    game_graph_temp = PreLoadedGraphs.chooseOption(preset_option)
-    #clear screen
-    resetScreen()
-    #Title on screem
-
-
-def presetBTN_selected():
-    #clear screen
-    resetScreen()
-    #create labels
-    preset_display_label = tk.Label(
-        text="Please select form the following preset graph options: ",
-        activebackground = "black",
-        activeforeground = "gray",  # Set the background color to black
-    )
-    preset_display_label.place(relx=.2, rely=.05, relheight=.2, relwidth=.3)
-
-
-    #create 10 buttons, for the 10 options
-    createPresetGraphButtons()
     #when any of the buttons are pressed, call the appropriate display functions per option
 
 
-def Create_show_msg(event):
+def Create_show_msg():
    messagebox.showinfo("Message","You pressed create new graph!.")
 
 def preset_show_msg(event):
    messagebox.showinfo("Message","you pressed preload graph!")
    presetBTN_selected()
+
+def beginGame(preset_value):
+    global vertex_button_dict
+    global game_graph
+    global list_of_game_btns
+
+    resetScreen(app)
+    
+
+    if len(preset_value) > 2:
+        titleGAME = tk.Label(
+        app,
+        text="Lights Out!",
+        activebackground = "black",
+        activeforeground = "gray",  # Set the background color to black
+        width = 10, 
+        height = 10
+        )
+        titleGAME.place(relx=.2, rely=.2, relheight=.1, relwidth=.1)
+        #generate by case nodes + edges
+        match preset_value:
+            case "option_one":
+                game_graph = PreLoadedGraphs.chooseOption(preset_value)
+                A_btn = tk.Button(
+                    app,
+                    text="A",
+                    width=25,
+                    height=5,
+                    highlightbackground= 'red',
+                    highlightcolor='red',
+                    foreground = 'black',
+                    #command=lambda: [toggleBTN("A_btn"), Create_show_msg()]
+                    )
+                A_btn['command'] = lambda: [toggleBTN(A_btn), Create_show_msg()]
+                A_btn.place(relx=.2, rely=.35, relheight=.06, relwidth=.06)
+
+                B_btn = tk.Button(
+                    app,
+                    text="B",
+                    width=25,
+                    height=5,
+                    highlightbackground= 'red',
+                    foreground = 'black',
+                    #command=partial(generatePresetGraph, "option_one")
+                    )
+                B_btn.place(relx=.3, rely=.35, relheight=.06, relwidth=.06)
+
+                C_btn = tk.Button(
+                    app,
+                    text="C",
+                    width=25,
+                    height=5,
+                    highlightbackground= 'red',
+                    foreground = 'black',
+                    #command=partial(generatePresetGraph, "option_one")
+                    )
+                C_btn.place(relx=.4, rely=.35, relheight=.06, relwidth=.06)
+
+                D_btn = tk.Button(
+                    app,
+                    text="D",
+                    width=25,
+                    height=5,
+                    highlightbackground= 'red',
+                    foreground = 'black',
+                    #command=partial(generatePresetGraph, "option_one")
+                    )
+                D_btn.place(relx=.5, rely=.35, relheight=.06, relwidth=.06)
+
+                E_btn = tk.Button(
+                    app,
+                    text="E",
+                    width=25,
+                    height=5,
+                    highlightbackground= 'red',
+                    foreground = 'black',
+                    #command=partial(generatePresetGraph, "option_one")
+                    )
+                E_btn.place(relx=.6, rely=.35, relheight=.06, relwidth=.06)
+
+                F_btn = tk.Button(
+                    app,
+                    text="F",
+                    width=25,
+                    height=5,
+                    highlightbackground= 'red',
+                    foreground = 'black',
+                    #command=partial(generatePresetGraph, "option_one")
+                    )
+                F_btn.place(relx=.7, rely=.35, relheight=.06, relwidth=.06)
+
+
+                vertex_button_dict = {A_btn: "A",
+                                      B_btn: "B",
+                                      C_btn: "C",
+                                      D_btn: "D",
+                                      E_btn: "E",
+                                      F_btn: "F"}
+                list_of_game_btns = [A_btn, B_btn, C_btn, D_btn, E_btn, F_btn]
+                                      
+                #app.create_line(100,200,200,35, fill="green", width=5)
+            case "option_two":
+                #display
+                pass
+            case "option_three":
+                #display
+                pass
+
+            case "option_four":
+                #display
+                pass
+
+            case "option_five":
+                #display
+                pass
+
+            case "option_six":
+                #display
+                pass
+
+            case "option_seven":
+                #display
+                pass
+
+            case "option_eight":
+                #display
+                pass
+
+            case "option_nine":
+                #display
+                pass
+
+            case "option_ten":
+                #display
+                pass
+
+            case _:
+                print("not an option")
+                return
+    else:
+        messagebox.showinfo("Message","This function is under constuction!")
+        return
+
+
 
 
 #visual stuff
