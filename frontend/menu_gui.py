@@ -12,7 +12,8 @@ import startGame_gui
 root = tk.Tk()
 root.title("Lights Out! A Game on Directed Graphs")
 root.geometry("1500x1000")
-app = tk.Frame(root, background="#c7e7c9")
+app = tk.Canvas(root, width=600, height=600, bg="#c7e7c9")
+#app = tk.Frame(root, background="#c7e7c9")
 app.place(relx=0, rely=0, relheight=1, relwidth=1)
 
 #	enter widgets here
@@ -30,6 +31,7 @@ list_of_game_btns = []
 def resetScreen(frame_name):
     for child in frame_name.winfo_children():
         child.destroy()
+    frame_name.delete("all")
 
 def destoryWidget(widget):
     for child in app.winfo_children():
@@ -49,27 +51,26 @@ def toggleBTN(btn):
 
     #for child in app.winfo_children():
         #if child == 
+    print("Ypu pressed: "+ str(vertex_to_toggle))
     
-    toggleButtonColor(btn)
+    newColor_currentVertex = toggleButtonColor(btn['highlightbackground'])
+    btn["highlightbackground"] = newColor_currentVertex
     for wgd in app.winfo_children(): # all widgets 
-        try:
-            if wgd['text'] in edge_list:
-                toggleButtonColor(wgd['highlightbackground']) # change the background colour
-            else:
-                pass
-        except:
-            pass
-    #for button in vertex_button_dict:
-        #if vertex_button_dict[button] in edge_list:
-            #toggleButtonColor(button.cget('bg'))
+        if wgd['text'] in edge_list:
+            print("changing button color")
+            newColor = toggleButtonColor(wgd['highlightbackground']) # change the background colour
+            wgd["highlightbackground"] = newColor
+
+
     game_graph.printGraph()
-    if game_graph.checkWinner:
+    if game_graph.checkWinner():
         #display a message saying the game has been won!
-        play_again = messagebox.askretrycancel('WINNER', 'You won! Would you like to play again?')
-        if play_again == 'yes':
-            pass
-        elif play_again == 'no':
-            pass
+        play_again = messagebox.askyesnocancel('WINNER', 'You won! Would you like to play again?')
+        print(play_again)
+        if play_again == True:
+            presetBTN_selected()
+        elif play_again == False:
+            main_menu()
         else:
             messagebox.showerror('error', 'something went wrong')
 
@@ -93,7 +94,7 @@ def presetBTN_selected():
     #clear screen
     resetScreen(app)
     #create labels
-    preset_display_label = tk.Label(
+    preset_display_label = tk.Label(app,
         text="Please select form the following preset graph options: ",
         activebackground = "black",
         activeforeground = "gray",  # Set the background color to black
@@ -228,6 +229,7 @@ def beginGame(preset_value):
 
     resetScreen(app)
     
+    #destoryWidget(widget)
 
     if len(preset_value) > 2:
         titleGAME = tk.Label(
@@ -246,6 +248,7 @@ def beginGame(preset_value):
                 A_btn = tk.Button(
                     app,
                     text="A",
+                    font=("Arial", 35),
                     width=25,
                     height=5,
                     highlightbackground= 'red',
@@ -253,63 +256,81 @@ def beginGame(preset_value):
                     foreground = 'black',
                     #command=lambda: [toggleBTN("A_btn"), Create_show_msg()]
                     )
-                A_btn['command'] = lambda: [toggleBTN(A_btn), Create_show_msg()]
-                A_btn.place(relx=.2, rely=.35, relheight=.06, relwidth=.06)
+                A_btn['command'] = lambda: [toggleBTN(A_btn)]
+                A_btn.place(relx=.10, rely=.50, relheight=.1, relwidth=.1)
+                # The line goes through the series of points 
+                # (x0, y0), (x1, y1), … (xn, yn)
+                app.create_line(300, 535, 373, 535, width=9, arrow=tk.LAST)
 
                 B_btn = tk.Button(
                     app,
                     text="B",
+                    font=("Arial", 35),
                     width=25,
                     height=5,
                     highlightbackground= 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
                     )
-                B_btn.place(relx=.3, rely=.35, relheight=.06, relwidth=.06)
+                B_btn['command'] = lambda: [toggleBTN(B_btn)]
+                B_btn.place(relx=.25, rely=.50, relheight=.1, relwidth=.1)
+                app.create_line(500, 535, 600, 535, width=9, arrow=tk.LAST)
 
                 C_btn = tk.Button(
                     app,
                     text="C",
+                    font=("Arial", 35),
                     width=25,
                     height=5,
                     highlightbackground= 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
                     )
-                C_btn.place(relx=.4, rely=.35, relheight=.06, relwidth=.06)
+                C_btn['command'] = lambda: [toggleBTN(C_btn)]
+                C_btn.place(relx=.40, rely=.50, relheight=.1, relwidth=.1)
+                app.create_line(750, 535, 823, 535, width=9, arrow=tk.LAST)
+
 
                 D_btn = tk.Button(
                     app,
                     text="D",
+                    font=("Arial", 35),
                     width=25,
                     height=5,
                     highlightbackground= 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
                     )
-                D_btn.place(relx=.5, rely=.35, relheight=.06, relwidth=.06)
+                D_btn['command'] = lambda: [toggleBTN(D_btn)]
+                D_btn.place(relx=.55, rely=.50, relheight=.1, relwidth=.1)
+                app.create_line(975, 535, 1048, 535, width=9, arrow=tk.LAST)
 
                 E_btn = tk.Button(
                     app,
                     text="E",
+                    font=("Arial", 35),
                     width=25,
                     height=5,
                     highlightbackground= 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
                     )
-                E_btn.place(relx=.6, rely=.35, relheight=.06, relwidth=.06)
+                E_btn['command'] = lambda: [toggleBTN(E_btn)]
+                E_btn.place(relx=.70, rely=.50, relheight=.1, relwidth=.1)
+                app.create_line(1200, 535, 1273, 535, width=9, arrow=tk.LAST)
 
                 F_btn = tk.Button(
                     app,
                     text="F",
+                    font=("Arial", 35),
                     width=25,
                     height=5,
                     highlightbackground= 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
                     )
-                F_btn.place(relx=.7, rely=.35, relheight=.06, relwidth=.06)
+                F_btn['command'] = lambda: [toggleBTN(F_btn)]
+                F_btn.place(relx=.85, rely=.50, relheight=.1, relwidth=.1)
 
 
                 vertex_button_dict = {A_btn: "A",
@@ -367,38 +388,40 @@ def beginGame(preset_value):
 
 
 #visual stuff
-title = tk.Label(
-    app,
-    text="Lights Out!",
-    font=("Arial", 40),
-    activebackground = "#c7e7c9",
-    activeforeground = "#c7e7c9",  # Set the background color to black
-    width = 20, 
-    height = 20
-)
-title.place(relx=.4, rely=.05, relheight=.2, relwidth=.2)
+def main_menu():
+    resetScreen(app)
+    title = tk.Label(
+        app,
+        text="Lights Out!",
+        font=("Arial", 40),
+        activebackground = "#c7e7c9",
+        activeforeground = "#c7e7c9",  # Set the background color to black
+        width = 20, 
+        height = 20
+    )
+    title.place(relx=.4, rely=.05, relheight=.2, relwidth=.2)
 
-createNewGraph_btn = tk.Button(
-    app,
-    text="Create New Graph",
-    font=("Arial", 30),
-    width=25,
-    height=15,
-    activebackground = "#c7e7c9",
-    activeforeground = "#c7e7c9",
-    command=Create_show_msg
-)
-createNewGraph_btn.place(relx=.27, rely=.5, relheight=.15, relwidth=.18)
+    createNewGraph_btn = tk.Button(
+        app,
+        text="Create New Graph",
+        font=("Arial", 30),
+        width=25,
+        height=15,
+        activebackground = "#c7e7c9",
+        activeforeground = "#c7e7c9",
+        command=Create_show_msg
+    )
+    createNewGraph_btn.place(relx=.27, rely=.5, relheight=.15, relwidth=.18)
 
-loadPresetGraph_btn = tk.Button(
-    app, 
-    text="Preloaded Graphs",
-    font=("Arial", 30),
-    activebackground = "black",
-    activeforeground = "gray",
-    command = presetBTN_selected
-)
-loadPresetGraph_btn.place(relx=.5, rely=.5, relheight=.15, relwidth=.18)
+    loadPresetGraph_btn = tk.Button(
+        app, 
+        text="Preloaded Graphs",
+        font=("Arial", 30),
+        activebackground = "black",
+        activeforeground = "gray",
+        command = presetBTN_selected
+    )
+    loadPresetGraph_btn.place(relx=.5, rely=.5, relheight=.15, relwidth=.18)
 
-
+main_menu()
 app.mainloop()

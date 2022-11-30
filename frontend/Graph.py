@@ -189,6 +189,7 @@ class Graph(object):
     def checkWinner(self):
         for key in self.vertex_values:
             if self.vertex_values[key] != 0:
+                print("loser")
                 return False
         return True
 
