@@ -100,10 +100,10 @@ def presetBTN_selected():
     preset_display_label = tk.Label(app,
         text="Please select form the following preset graph options: ",
         bg = "#c7e7c9",
-        font=("Arial", 25),
+        font=("Arial", 15),
         activeforeground = "gray",  # Set the background color to black
     )
-    preset_display_label.place(relx=.10, rely=.03, relheight=.2, relwidth=.82)
+    preset_display_label.place(relx=.10, rely=.05, relheight=.2, relwidth=.82)
  
     back_btn = tk.Button(app,
     text="Back",
@@ -114,7 +114,7 @@ def presetBTN_selected():
     activeforeground = "gray",
     command = main_menu
     )
-    back_btn.place(relx=.32, rely=.25, relheight=.125, relwidth=.125)
+    back_btn.place(relx=.45, rely=.030, relheight=.070, relwidth=.070)
  
     #create 10 buttons, for the 10 options
      #preset buttons are created here, seperation used for simplicity
@@ -126,7 +126,7 @@ def presetBTN_selected():
     activebackground = "black",
     activeforeground = "gray",
     command=partial(beginGame, "option_one"))
-    PresetONE_btn.place(relx=.32, rely=.25, relheight=.125, relwidth=.125)
+    PresetONE_btn.place(relx=.32, rely=.20, relheight=.125, relwidth=.125)
  
     PresetTWO_btn = tk.Button(
     app,
@@ -139,7 +139,7 @@ def presetBTN_selected():
     command=partial(generatePresetGraph, "option_two")
     #command=partial(startGame_gui.beginGame, PreLoadedGraphs.chooseOption("option_two"))
     )
-    PresetTWO_btn.place(relx=.32, rely=.4, relheight=.125, relwidth=.125)
+    PresetTWO_btn.place(relx=.32, rely=.35, relheight=.125, relwidth=.125)
  
     PresetTHREE_btn = tk.Button(
     app,
@@ -151,7 +151,7 @@ def presetBTN_selected():
     activeforeground = "gray",
     command=partial(generatePresetGraph, "option_three")
     )
-    PresetTHREE_btn.place(relx=.32, rely=.55, relheight=.125, relwidth=.125)
+    PresetTHREE_btn.place(relx=.32, rely=.50, relheight=.125, relwidth=.125)
  
     PresetFOUR_btn = tk.Button(
     app,
@@ -163,7 +163,7 @@ def presetBTN_selected():
     activeforeground = "gray",
     command=partial(generatePresetGraph, "option_four")
     )
-    PresetFOUR_btn.place(relx=.32, rely=.70, relheight=.125, relwidth=.125)
+    PresetFOUR_btn.place(relx=.32, rely=.65, relheight=.125, relwidth=.125)
  
     PresetFIVE_btn = tk.Button(
     app,
@@ -175,7 +175,7 @@ def presetBTN_selected():
     activeforeground = "gray",
     command=partial(generatePresetGraph, "option_five")
     )
-    PresetFIVE_btn.place(relx=.32, rely=.85, relheight=.125, relwidth=.125)
+    PresetFIVE_btn.place(relx=.32, rely=.80, relheight=.125, relwidth=.125)
  
     PresetSIX_btn = tk.Button(
     app,
@@ -187,7 +187,7 @@ def presetBTN_selected():
     activeforeground = "gray",
     command=partial(generatePresetGraph, "option_six")
     )
-    PresetSIX_btn.place(relx=.55, rely=.25, relheight=.125, relwidth=.125)
+    PresetSIX_btn.place(relx=.55, rely=.20, relheight=.125, relwidth=.125)
  
     PresetSEVEN_btn = tk.Button(
     app,
@@ -199,7 +199,7 @@ def presetBTN_selected():
     activeforeground = "gray",
     command=partial(generatePresetGraph, "option_seven")
     )
-    PresetSEVEN_btn.place(relx=.55, rely=.4, relheight=.125, relwidth=.125)
+    PresetSEVEN_btn.place(relx=.55, rely=.35, relheight=.125, relwidth=.125)
  
     PresetEIGHT_btn = tk.Button(
     app,
@@ -211,7 +211,7 @@ def presetBTN_selected():
     activeforeground = "gray",
     command=partial(generatePresetGraph, "option_eight")
     )
-    PresetEIGHT_btn.place(relx=.55, rely=.55, relheight=.125, relwidth=.125)
+    PresetEIGHT_btn.place(relx=.55, rely=.50, relheight=.125, relwidth=.125)
  
     PresetNINE_btn = tk.Button(
     app,
@@ -223,7 +223,7 @@ def presetBTN_selected():
     activeforeground = "gray",
     command=partial(generatePresetGraph, "option_nine")
     )
-    PresetNINE_btn.place(relx=.55, rely=.70, relheight=.125, relwidth=.125)
+    PresetNINE_btn.place(relx=.55, rely=.65, relheight=.125, relwidth=.125)
  
     PresetTEN_btn = tk.Button(
     app,
@@ -235,7 +235,7 @@ def presetBTN_selected():
     activeforeground = "gray",
     command=partial(generatePresetGraph, "option_ten")
     )
-    PresetTEN_btn.place(relx=.55, rely=.85, relheight=.125, relwidth=.125)
+    PresetTEN_btn.place(relx=.55, rely=.80, relheight=.125, relwidth=.125)
  
     #when any of the buttons are pressed, call the appropriate display functions per option
  
