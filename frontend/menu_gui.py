@@ -252,9 +252,21 @@ def drawBtn_selected():
         height=5,
         activebackground = "black",
         activeforeground = "gray",
-        command = main_menu
+        command = takeEdgeInputs
         )
-    stop_editing_btn.place(relx=.45, rely=.030, relheight=.070, relwidth=.15)
+    stop_editing_btn.place(relx=.25, rely=.030, relheight=.070, relwidth=.15)
+
+    back_btn = tk.Button(app,
+    text="Back",
+    font=("Arial", 10),
+    width=25,
+    height=5,
+    activebackground = "black",
+    activeforeground = "gray",
+    command = main_menu
+    )
+    back_btn.place(relx=.65, rely=.030, relheight=.070, relwidth=.070)
+
     app.old_coords = None
 
     app.bind('<Button-1>', draw_vertex)
@@ -268,6 +280,12 @@ def draw_edge(event):
       app.create_line(x, y, x1, y1, width=5)
    app.old_coords = x, y
 
+def takeEdgeInputs():
+    app.unbind('<Button 1>')
+    app.unbind('<Button-3>')
+    T = tk.Entry(app)
+    T.place(relx=.35, rely=.80, relheight=.080, relwidth=.25)
+    #T.insert(tk.END, "tester")
 
 def contructGraph(list_of_verticies, list_of_edges, button_list):
     pass
