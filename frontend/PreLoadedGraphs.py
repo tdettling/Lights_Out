@@ -172,7 +172,7 @@ def chooseOption(option_selected):
             selectedGraph = createOptionOne()
             return selectedGraph
         case "option_two":
-            print("something")
+            print("something 2")
             selectedGraph = createOptionTwo()
             return selectedGraph
 
