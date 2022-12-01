@@ -745,7 +745,7 @@ def beginGame(preset_value):
                 activebackground = "black",
                 activeforeground = "gray",
                 )
-        reset_btn['command'] = lambda: [beginGame(preset_value)]
+        reset_btn['command'] = lambda: [displayResetNotifican(), beginGame(preset_value)]
         reset_btn.place(relx=.30, rely=.70, relheight=.070, relwidth=.160)
 
         chooseDiff_btn = tk.Button(app,
@@ -764,7 +764,9 @@ def beginGame(preset_value):
         return
  
  
- 
+def displayResetNotifican():
+    messagebox.showinfo("Reset","Graph has been reset!")
+    return
  
 #visual stuff
 def main_menu():
