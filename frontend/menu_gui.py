@@ -844,13 +844,8 @@ def beginGame(preset_value):
                 activebackground = "black",
                 activeforeground = "gray",
                 )
-<<<<<<< HEAD
-        reset_btn['command'] = lambda: [displayResetNotifican(), beginGame(preset_value)]
-        reset_btn.place(relx=.30, rely=.70, relheight=.070, relwidth=.160)
-=======
         reset_btn['command'] = lambda: [beginGame(preset_value), displayResetMessage()]
         reset_btn.place(relx=.25, rely=.70, relheight=.070, relwidth=.160)
->>>>>>> refs/remotes/origin/main
 
         chooseDiff_btn = tk.Button(app,
                 text="Choose Different Graph",
@@ -868,14 +863,8 @@ def beginGame(preset_value):
         return
  
  
-<<<<<<< HEAD
-def displayResetNotifican():
-    messagebox.showinfo("Reset","Graph has been reset!")
-    return
-=======
 def displayResetMessage():
     messagebox.showinfo("Graph Reset","Graph has been reset!")
->>>>>>> refs/remotes/origin/main
  
 #visual stuff
 def main_menu():
@@ -939,4 +928,3 @@ def main_menu():
  
 main_menu()
 app.mainloop()
-
