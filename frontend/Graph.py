@@ -123,14 +123,14 @@ class Graph(object):
     def addConnectionForeExsistingNode(self, vertex_name, adjacent_vertex):
         if not self.containsVertexInEdgeConnectionDict(vertex_name) or not self.containsVertexInValues(vertex_name) \
             or self.containsConnection(vertex_name, adjacent_vertex):
-            return False
+            return 
         for key in self.edge_dict:
             if key == vertex_name:
                 self.edge_dict[key].append(adjacent_vertex)
                 print(str(self.edge_dict[key]))
-        return True
+        return 
 
-#FIXME
+
     def addVertex(self, vertex_name, connection = [], vertex_value = 1):
         if self.containsVertexInEdgeConnectionDict(vertex_name) or self.containsVertexInValues(vertex_name) \
             or self.containsConnection(vertex_name, connection):
@@ -145,8 +145,10 @@ class Graph(object):
             return False
         del self.adj_dict[vertex_name]
 
+
     def editVertexValue(self, vertex_name, new_value):
         self.vertex_values[vertex_name] = (new_value) % self.max_vertex_value
+        
 
     def addOneToVertexValue(self, vertex_name):
         if not self.containsVertexInEdgeConnectionDict(vertex_name) or not self.containsVertexInValues(vertex_name):
@@ -185,6 +187,28 @@ class Graph(object):
         for edge in self.edge_dict[vertex_name]:
             self.addOneToVertexValue(edge)
         return 
+
+    def isPlanar(self):
+        '''
+        Euler's formula shows that for planar graph 
+        G= (V, E), |E| <= 3*|V| - 6, so every planar graph contains a linear number of edges, 
+        and further, every planar graph must contain a vertex of degree at most 5.
+        '''
+        #Get num of verticies
+        numVerticies = len(self.vertex_values)
+
+        #Get num of edges
+        #Get highest vertex degree
+        numEdges = 0
+        highestDegree = 0
+        for vertex in self.edge_dict:
+            degreeOfCurVertex = len(self.edge_dict[vertex])
+            numEdges = numEdges + degreeOfCurVertex
+            if degreeOfCurVertex > highestDegree:
+                highestDegree = degreeOfCurVertex
+
+        return (numEdges <= (3 * numVerticies) - 6) and (highestDegree < 6)
+            
 
     def checkWinner(self):
         for key in self.vertex_values:

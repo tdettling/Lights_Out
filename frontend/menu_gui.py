@@ -4,7 +4,7 @@ from tkinter import E, messagebox
 from tkinter import ttk
 from tracemalloc import start
 from turtle import bgcolor, onclick
- 
+import string
 import PreLoadedGraphs
 from Graph import Graph
 
@@ -29,6 +29,19 @@ list_of_game_btns = []
  
 global moves_counter
 moves_counter = 0
+
+global alphabet
+alphabet = list(string.ascii_uppercase)
+
+global indexOfAlphabet
+indexOfAlphabet = -1
+
+coords = {"x":0,"y":0,"x2":0,"y2":0}
+# keep a reference to all lines by keeping them in a list 
+lines = []
+
+global tempStorage
+tempStorage = ["null", "null"]
  
  
 def resetScreen(frame_name):
@@ -280,17 +293,65 @@ def draw_edge(event):
       app.create_line(x, y, x1, y1, width=5)
    app.old_coords = x, y
 
+
+coords = {"x":0,"y":0,"x2":0,"y2":0}
+# keep a reference to all lines by keeping them in a list 
+lines = []
+
+def createEdgeConnection(lineX, lineY):
+    return "tester"
+
+def clickforEdge(e):
+    # define start point for line
+    coords["x"] = e.x
+    coords["y"] = e.y
+
+    # create a line on this point and store it in the list
+    lines.append(app.create_line(coords["x"],coords["y"],coords["x"],coords["y"], width=9, arrow=tk.LAST))
+    #tempStorage[0] = createEdgeConnection(coords["x"], coords["y"])
+
+
+def dragForEdge(e):
+    # update the coordinates from the event
+
+    coords["x2"] = e.x
+    coords["y2"] = e.y
+
+    # Change the coordinates of the last created line to the new coordinates
+    app.coords(lines[-1], coords["x"],coords["y"],coords["x2"],coords["y2"])
+
+
+def endCreateLine(event):
+    #get mouse pos
+    x, y = event.x, event.y
+    print("released mouse")
+    #tempStorage[1] = createEdgeConnection(x, y)
+
+
+def addEdgeConnection():
+    global tempStorage
+    startVertex = tempStorage[0]
+    endVertex = tempStorage[1]
+    game_graph.addConnectionForeExsistingNode(startVertex, endVertex)
+    game_graph.printGraph()
+
+
 def takeEdgeInputs():
     app.unbind('<Button 1>')
     app.unbind('<Button-3>')
-    T = tk.Entry(app)
-    T.place(relx=.35, rely=.80, relheight=.080, relwidth=.25)
-    #T.insert(tk.END, "tester")
+
+    app.bind("<ButtonPress-1>", clickforEdge)
+    app.bind("<B1-Motion>", dragForEdge) 
+    app.bind("<ButtonRelease-1>", endCreateLine)
+    #x, y = root.btn1.winfo_rootx(), root.btn1.winfo_rooty()
 
 def contructGraph(list_of_verticies, list_of_edges, button_list):
     pass
 
 def draw_vertex(event):
+    global alphabet
+    global indexOfAlphabet
+
     x1=event.x
     y1=event.y
     x2=event.x
@@ -299,26 +360,31 @@ def draw_vertex(event):
     placement_x = float(((x1+x2)/2)/1000)
     placement_y = float(((y1+y2)/2)/600)
 
-    print("clicky click")
-
-    btn = tk.Button(
+    indexOfAlphabet += 1
+    nameOfVertex = alphabet[indexOfAlphabet]
+    newBTNname = str(nameOfVertex + "_" + "btn")
+    newBTNname = tk.Button(
                     app,
-                    text="A",
+                    text=nameOfVertex,
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     highlightcolor='red',
                     foreground = 'black',
                     #command=lambda: [toggleBTN("A_btn"), Create_show_msg()]
                     )
-    btn['command'] = lambda: [toggleBTN(btn)]
-    btn.place(relx=placement_x, rely=placement_y, relheight=.1, relwidth=.1)
-
-    # Draw an oval in the given co-ordinates
-    print(str(placement_x))
-    print(str(placement_y))
-    app.create_oval(x1,y1,x2,y2,fill="black", width=20)
+    #btn.bind('<Double-Button-1>', handler)
+    #btn['command'] = lambda: [toggleBTN(btn)]
+    newBTNname.place(relx=placement_x, rely=placement_y, relheight=.1, relwidth=.1)
+    game_graph.addVertex(nameOfVertex)
+    
+    vertex_button_dict[newBTNname] = nameOfVertex
+    app.update()
+    x, y = newBTNname.winfo_rootx(), newBTNname.winfo_rooty()
+    print(str(x))
+    print(str(y))
 
  
 def preset_show_msg(event):
