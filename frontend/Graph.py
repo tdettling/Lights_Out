@@ -124,10 +124,22 @@ class Graph(object):
         if not self.containsVertexInEdgeConnectionDict(vertex_name) or not self.containsVertexInValues(vertex_name) \
             or self.containsConnection(vertex_name, adjacent_vertex):
             return 
+
+        print("old edge list for " + vertex_name + " is: " + str(self.edge_dict[vertex_name]))
+        print("old edge list for " + adjacent_vertex + " is: " + str(self.edge_dict[vertex_name]))
+
+        edgeList = self.edge_dict[vertex_name]
+        edgeList.append(adjacent_vertex)
+        self.edge_dict[vertex_name] = edgeList
+
+        print("new edge list for " + vertex_name + " is: " + str(self.edge_dict[vertex_name]))
+        print("new edge list for " + adjacent_vertex + " is: " + str(self.edge_dict[vertex_name]))
+        '''
         for key in self.edge_dict:
             if key == vertex_name:
                 self.edge_dict[key].append(adjacent_vertex)
                 print(str(self.edge_dict[key]))
+        '''
         return 
 
 

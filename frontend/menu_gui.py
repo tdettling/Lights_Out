@@ -1,4 +1,5 @@
 from functools import partial
+from operator import add
 import tkinter as tk
 from tkinter import E, messagebox
 from tkinter import ttk
@@ -41,7 +42,7 @@ coords = {"x":0,"y":0,"x2":0,"y2":0}
 lines = []
 
 global tempStorage
-tempStorage = ["null", "null"]
+tempStorage = [0, 0]
  
  
 def resetScreen(frame_name):
@@ -299,7 +300,22 @@ coords = {"x":0,"y":0,"x2":0,"y2":0}
 lines = []
 
 def createEdgeConnection(lineX, lineY):
-    return "tester"
+    for child in app.winfo_children():
+        # if it is a button, if it is a vertex
+        if child.winfo_class() == 'Button' \
+        and len(child['text']) == 1:
+            #get x,y
+            btnX, btnY = child.winfo_rootx(), child.winfo_rooty()
+            #if the line is close to a vertex
+            if btnX - 155 <= lineX <= btnX + 155 and \
+            btnY - 155 <= lineY <= btnY + 155:
+                print("sucessfull")
+                return child['text']
+            else:
+                print("not in range")
+
+    print("worng")
+    return "false"
 
 def clickforEdge(e):
     # define start point for line
@@ -308,7 +324,7 @@ def clickforEdge(e):
 
     # create a line on this point and store it in the list
     lines.append(app.create_line(coords["x"],coords["y"],coords["x"],coords["y"], width=9, arrow=tk.LAST))
-    #tempStorage[0] = createEdgeConnection(coords["x"], coords["y"])
+    tempStorage[0] = createEdgeConnection(coords["x"], coords["y"])
 
 
 def dragForEdge(e):
@@ -325,15 +341,18 @@ def endCreateLine(event):
     #get mouse pos
     x, y = event.x, event.y
     print("released mouse")
-    #tempStorage[1] = createEdgeConnection(x, y)
+    tempStorage[1] = createEdgeConnection(x, y)
+    addEdgeConnection()
 
 
 def addEdgeConnection():
     global tempStorage
+    print("calling addEdgeConnection")
     startVertex = tempStorage[0]
     endVertex = tempStorage[1]
     game_graph.addConnectionForeExsistingNode(startVertex, endVertex)
     game_graph.printGraph()
+    tempStorage = [0,0]
 
 
 def takeEdgeInputs():
@@ -382,9 +401,6 @@ def draw_vertex(event):
     
     vertex_button_dict[newBTNname] = nameOfVertex
     app.update()
-    x, y = newBTNname.winfo_rootx(), newBTNname.winfo_rooty()
-    print(str(x))
-    print(str(y))
 
  
 def preset_show_msg(event):
