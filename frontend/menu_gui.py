@@ -1,15 +1,12 @@
-from functools import partial
-from operator import add
-import tkinter as tk
-from tkinter import E, messagebox
-from tkinter import ttk
-from tracemalloc import start
-from turtle import bgcolor, onclick
 import string
+import tkinter as tk
+from functools import partial
+from tkinter import E, messagebox, ttk
+from turtle import bgcolor, onclick
+
 import PreLoadedGraphs
 from Graph import Graph
 
- 
 root = tk.Tk()
 root.title("Lights Out! A Game on Directed Graphs")
 root.geometry("1000x600")
@@ -69,14 +66,19 @@ def toggleBTN(btn, preset_value):
  
     #for child in app.winfo_children():
         #if child ==
-   
+    #highlightbackground='red'
+    newColor_currentVertex_MAC = toggleButtonColor(btn['highlightbackground'])
     newColor_currentVertex = toggleButtonColor(btn['bg'])
     btn["bg"] = newColor_currentVertex
+    btn['highlightbackground'] = newColor_currentVertex_MAC
     for wgd in app.winfo_children(): # all widgets
         if wgd['text'] in edge_list:
             print("changing button color")
-            newColor = toggleButtonColor(wgd['bg']) # change the background colour
+            newColor = toggleButtonColor(wgd['bg']) # change the background color
+            newColorMAC = toggleButtonColor(wgd['highlightbackground'])
             wgd["bg"] = newColor
+            wgd["highlightbackground"] = newColorMAC
+
  
     moves_counter = moves_counter + 1
     game_graph.printGraph()
@@ -312,7 +314,7 @@ def createEdgeConnection(lineX, lineY):
                 print("sucessfull")
                 return child['text']
             else:
-                print("not in range")
+                print("widget: " + child['text'] + " is not in required range")
 
     print("worng")
     return "false"
@@ -325,6 +327,7 @@ def clickforEdge(e):
     # create a line on this point and store it in the list
     lines.append(app.create_line(coords["x"],coords["y"],coords["x"],coords["y"], width=9, arrow=tk.LAST))
     tempStorage[0] = createEdgeConnection(coords["x"], coords["y"])
+    print("strating edge: " + str(tempStorage[0]))
 
 
 def dragForEdge(e):
@@ -342,6 +345,7 @@ def endCreateLine(event):
     x, y = event.x, event.y
     print("released mouse")
     tempStorage[1] = createEdgeConnection(x, y)
+    print("ending edge: " + str(tempStorage[1]))
     addEdgeConnection()
 
 
@@ -398,6 +402,7 @@ def draw_vertex(event):
     #btn['command'] = lambda: [toggleBTN(btn)]
     newBTNname.place(relx=placement_x, rely=placement_y, relheight=.1, relwidth=.1)
     game_graph.addVertex(nameOfVertex)
+    game_graph.printGraph()
     
     vertex_button_dict[newBTNname] = nameOfVertex
     app.update()
@@ -461,8 +466,8 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
-                    bg = 'red',
                     highlightcolor='red',
+                    bg = 'red',
                     foreground = 'black',
                     #command=lambda: [toggleBTN("A_btn"), Create_show_msg()]
                     )
@@ -478,6 +483,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -492,6 +498,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -507,6 +514,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -521,6 +529,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -535,6 +544,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -577,6 +587,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -591,6 +602,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -609,6 +621,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -623,6 +636,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -637,6 +651,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -662,6 +677,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='blue',
                     bg = 'blue',
                     highlightcolor='red',
                     foreground = 'black',
@@ -679,6 +695,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -693,6 +710,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -707,6 +725,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -748,6 +767,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -762,6 +782,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='blue',
                     bg = 'blue',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -776,6 +797,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -839,6 +861,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='blue',
                     bg = 'blue',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -853,6 +876,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='blue',
                     bg = 'blue',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -868,6 +892,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -882,6 +907,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='blue',
                     bg = 'blue',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
@@ -896,6 +922,7 @@ def beginGame(preset_value):
                     font=("Arial", 35),
                     width=25,
                     height=5,
+                    highlightbackground='red',
                     bg = 'red',
                     foreground = 'black',
                     #command=partial(generatePresetGraph, "option_one")
