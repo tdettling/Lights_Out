@@ -1173,10 +1173,11 @@ def beginGame(preset_value):
                 #C TO D
                 app.create_line(495, 295, 560, 370, 640, 305, width=8, smooth=1, arrow=tk.LAST)
                 #D TO C
-                app.create_line(580, 145, 425, 160, 355, 35, width=8, smooth=1, arrow=tk.LAST)
+                app.create_line(630, 245, 570, 160, 500, 235, width=8, smooth=1, arrow=tk.LAST)
                 #D TO E
-                #E TO DO
-                #app.create_line(800, 335, 850, 335, width=9, arrow=tk.LAST)
+                app.create_line(650, 295, 710, 370, 800, 305, width=8, smooth=1, arrow=tk.LAST)
+                #E TO D
+                app.create_line(790, 245, 720, 160, 650, 235, width=8, smooth=1, arrow=tk.LAST)
  
  
                 vertex_button_dict = {A_btn: "A",
@@ -1185,12 +1186,101 @@ def beginGame(preset_value):
                                       D_btn: "D",
                                       E_btn: "E"}
                 list_of_game_btns = [A_btn, B_btn, C_btn, D_btn, E_btn]
-                pass
  
             case "option_nine":
                 game_graph = PreLoadedGraphs.createOptionNine()
-                #display
-                pass
+                A_btn = tk.Button(
+                    app,
+                    text="A",
+                    font=("Arial", 35),
+                    width=25,
+                    height=5,
+                    highlightcolor='red',
+                    bg = 'red',
+                    foreground = 'black',
+                    #command=lambda: [toggleBTN("A_btn"), Create_show_msg()]
+                    )
+                A_btn['command'] = lambda: [toggleBTN(A_btn, preset_value)]
+                A_btn.place(relx=.25, rely=.40, relheight=.1, relwidth=.1)
+ 
+                B_btn = tk.Button(
+                    app,
+                    text="B",
+                    font=("Arial", 35),
+                    width=25,
+                    height=5,
+                    highlightbackground='red',
+                    bg = 'red',
+                    foreground = 'black',
+                    #command=partial(generatePresetGraph, "option_one")
+                    )
+                B_btn['command'] = lambda: [toggleBTN(B_btn, preset_value)]
+                B_btn.place(relx=.65, rely=.30, relheight=.1, relwidth=.1)
+ 
+                C_btn = tk.Button(
+                    app,
+                    text="C",
+                    font=("Arial", 35),
+                    width=25,
+                    height=5,
+                    highlightbackground='red',
+                    bg = 'red',
+                    foreground = 'black',
+                    #command=partial(generatePresetGraph, "option_one")
+                    )
+                C_btn['command'] = lambda: [toggleBTN(C_btn, preset_value)]
+                C_btn.place(relx=.25, rely=.25, relheight=.1, relwidth=.1)
+ 
+ 
+                D_btn = tk.Button(
+                    app,
+                    text="D",
+                    font=("Arial", 35),
+                    width=25,
+                    height=5,
+                    highlightbackground='red',
+                    bg = 'red',
+                    foreground = 'black',
+                    #command=partial(generatePresetGraph, "option_one")
+                    )
+                D_btn['command'] = lambda: [toggleBTN(D_btn, preset_value)]
+                D_btn.place(relx=.65, rely=.50, relheight=.1, relwidth=.1)
+ 
+                E_btn = tk.Button(
+                    app,
+                    text="E",
+                    font=("Arial", 35),
+                    width=25,
+                    height=5,
+                    highlightbackground='blue',
+                    bg = 'blue',
+                    foreground = 'black',
+                    #command=partial(generatePresetGraph, "option_one")
+                    )
+                E_btn['command'] = lambda: [toggleBTN(E_btn, preset_value)]
+                E_btn.place(relx=.25, rely=.55, relheight=.1, relwidth=.1)
+
+                #lines
+                #A TO B
+                app.create_line(300, 265, 645, 225, width=8, arrow=tk.LAST)
+                #A TO D
+                app.create_line(300, 275, 645, 325, width=8, arrow=tk.LAST)
+                #C TO B
+                app.create_line(300, 175, 645, 210, width=8, arrow=tk.LAST)
+                #D TO B
+                app.create_line(695, 300, 695, 240, width=8, arrow=tk.LAST)
+                #D TO E
+                app.create_line(675, 335, 352, 365, width=8, arrow=tk.LAST)
+                #E TO C
+                app.create_line(260, 375, 100, 255, 240, 180, width=8, smooth=1, arrow=tk.LAST)
+ 
+ 
+                vertex_button_dict = {A_btn: "A",
+                                      B_btn: "B",
+                                      C_btn: "C",
+                                      D_btn: "D",
+                                      E_btn: "E"}
+                list_of_game_btns = [A_btn, B_btn, C_btn, D_btn, E_btn]
  
             case "option_ten":
                 game_graph = PreLoadedGraphs.chooseOption(preset_value)

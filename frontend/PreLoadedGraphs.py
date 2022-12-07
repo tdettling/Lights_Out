@@ -134,16 +134,16 @@ def createOptionEight():
 
 def createOptionNine():
     g = Graph(2)
-    temp_edge_dict = {"A": ['D'],
+    temp_edge_dict = {"A": ['B','D'],
                       "B": [],
                       "C": ['B'],
                       "D": ['B', 'E'],
-                      "E": ['A']}
-    temp_vertex_values_dict = {"A": 1,
-                               "B": 0,
-                               "C": 0,
-                               "D": 1,
-                               "E": 1}
+                      "E": ['C']}
+    temp_vertex_values_dict = {"A": 0,
+                               "B": 1,
+                               "C": 1,
+                               "D": 0,
+                               "E": 0}
     g.addSetGraph(temp_edge_dict, temp_vertex_values_dict, 2)
 
     return g
@@ -169,51 +169,42 @@ def createOptionTen():
 def chooseOption(option_selected):
     match option_selected:
         case "option_one":
-            print("something")
             selectedGraph = createOptionOne()
             return selectedGraph
+            
         case "option_two":
-            print("something 2")
             selectedGraph = createOptionTwo()
             return selectedGraph
 
         case "option_three":
             selectedGraph = createOptionThree()
             return selectedGraph
-            print("something")
 
         case "option_four":
-            print("something")
             selectedGraph = createOptionFour()
             return selectedGraph
 
         case "option_five":
-            print("something")
             selectedGraph = createOptionFive()
             return selectedGraph
 
         case "option_six":
-            print("something")
             selectedGraph = createOptionSix()
             return selectedGraph
 
         case "option_seven":
-            print("something")
             selectedGraph = createOptionSeven()
             return selectedGraph
 
         case "option_eight":
-            print("something")
             selectedGraph = createOptionEight()
             return selectedGraph
 
         case "option_nine":
-            print("something")
             selectedGraph = createOptionNine()
             return selectedGraph
 
         case "option_ten":
-            print("something")
             selectedGraph = createOptionTen()
             return selectedGraph
 
