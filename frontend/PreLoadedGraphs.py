@@ -1,5 +1,6 @@
 from Graph import Graph
 
+
 def createOptionOne():
     g = Graph(2)
     temp_edge_dict = {"A": ['B'],
