@@ -49,10 +49,7 @@ class Graph(object):
                 print(str(error_dict[error_code]))
         if not temp_contains:
             print("Error code does not exist")
-    
-    def printAdjacency(self):
-        for vert in self.edge_dict:
-            print (vert)
+
 
     def containsVertexFromEdgeList(self, vertexForList, comparisonVertex):
         pass
@@ -114,7 +111,7 @@ class Graph(object):
 
         if len(edges) == 0:
             self.printError(2)
-            return
+            return edgeList
         else: 
             for edge in edges:
                 edgeList = edgeList + str(edge)
@@ -125,19 +122,26 @@ class Graph(object):
             or self.containsConnection(vertex_name, adjacent_vertex):
             return 
 
-
-        self.edge_dict[vertex_name].extend([adjacent_vertex])
+        print("Old " + str(vertex_name) + " edge set is: " + str(self.edge_dict[vertex_name]))
+        print("Old " + str(adjacent_vertex) + " edge set is: " + str(self.edge_dict[adjacent_vertex]))
+        self.edge_dict[vertex_name].append(adjacent_vertex)
+        print("New " + str(vertex_name) + " edge set is: " + str(self.edge_dict[vertex_name]))
+        print("New " + str(adjacent_vertex) + " edge set is: " + str(self.edge_dict[adjacent_vertex]))
         #edgeList.append(adjacent_vertex)
         return 
 
 
-    def addVertex(self, vertex_name, connection = [], vertex_value = 1):
+    def addVertex(self, vertex_name, connection = "none", vertex_value = 1):
         if self.containsVertexInEdgeConnectionDict(vertex_name) or self.containsVertexInValues(vertex_name) \
             or self.containsConnection(vertex_name, connection):
             return False  
 
         self.vertex_values[vertex_name] = vertex_value
-        self.edge_dict[vertex_name] = connection
+
+        if connection != "none":
+            self.edge_dict[vertex_name].append(connection)
+        else:
+            self.edge_dict[vertex_name] = []
         return True
         
     def removeVertex(self, vertex_name):
@@ -210,22 +214,35 @@ class Graph(object):
         return (numEdges <= (3 * numVerticies) - 6) and (highestDegree < 6)
             
 
+    def readyToPlay(self):
+        #if graph has at least 2 verticies and 1 edge
+        numVerticies = len(self.edge_dict)
+
+        numEdges = 0
+        for vertex in self.edge_dict:
+            degreeOfCurVertex = len(self.edge_dict[vertex])
+            numEdges = numEdges + degreeOfCurVertex
+
+        return ((numVerticies >= 2) and (numEdges >= 1))
+
     def checkWinner(self):
         for key in self.vertex_values:
             if self.vertex_values[key] != 0:
-                print("loser")
                 return False
         return True
 
     def printGraph(self):
-        temp_string = ""
-        node = ""
-        edges = ""
-        for key in self.edge_dict:
-            node = str(key)
-            edges = str(self.parseEdges(key))
-            temp_string = "Vertex: " + node + " is connected to: " + edges
-            print(temp_string)
+
+        for vertex, edgeconnections in self.edge_dict.items():
+            stringVertex = str(vertex)
+            print(stringVertex)
+            print(str(edgeconnections))
+            if len(edgeconnections) == 0: #if the vertex has at least one adjacent vertex
+                stringEdgeconnections = "None"
+            else:
+                stringEdgeconnections = ','.join(str(item) for item in edgeconnections)
+            print("Vertex: " + stringVertex + " is connected to: " + stringEdgeconnections)
+            
 
         for vertex in self.vertex_values:
             print("Vertex " + str(vertex) + " has value " + str(self.vertex_values[vertex]))
