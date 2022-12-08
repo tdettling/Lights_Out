@@ -1,21 +1,67 @@
 import unittest
 
-import frontend 
-from Graph import Graph
 import PreLoadedGraphs
+from Graph import Graph
 
 
 class TestGraph(unittest.TestCase):
 
     def test_geenral(self):
         g = Graph(2)
-        self.assertTrue(g.addVertex("D", 'A', 0))
+        #self.assertFalse(g.addVertex("D", 'A', 0))
         #print("test a graph: ")
         #g.printGraph()
-        self.assertTrue(g.containsVertexInEdgeConnectionDict("D"))
+        self.assertFalse(g.containsVertexInValues('D'))
+        self.assertFalse(g.containsVertexInValues('A'))
+        self.assertFalse(g.containsVertexInEdgeConnectionDict('D'))
+        self.assertFalse(g.containsVertexInEdgeConnectionDict('A'))
+        g.addVertex('D')
+        g.addVertex('A')
 
-        g.addConnectionForeExsistingNode("A", 'C')
-        self.assertTrue(g.containsConnection("D", 'A'))
+        self.assertTrue(g.containsVertexInValues('D'))
+        self.assertTrue(g.containsVertexInValues('A'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('D'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('A'))
+
+        g.addVertex('A', 'C')
+        self.assertTrue(g.addConnectionForeExsistingNode("A", 'C'))
+        self.assertTrue(g.containsConnection('A', 'C'))
+        self.assertFalse(g.containsConnection("D", 'A'))
+
+    def test_create_graph(self):
+        g = Graph(2)
+        g.addVertex('A')
+        g.addVertex('C')
+        g.addVertex('P')
+
+        self.assertTrue(g.containsVertexInValues('A'))
+        self.assertTrue(g.containsVertexInValues('C'))
+        self.assertTrue(g.containsVertexInValues('P'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('A'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('C'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('P'))
+
+        g.addConnectionForeExsistingNode('A', 'C')
+
+        g.removeVertex('P')
+
+        self.assertFalse(g.containsVertexInValues('P'))
+        self.assertFalse(g.containsVertexInEdgeConnectionDict('P'))
+
+        g.editVertexValue('A', 4)
+        self.assertEqual(0, g.vertex_values['A'])
+
+        g.editVertexValue('A', 3)
+        self.assertEqual(1, g.vertex_values['A'])
+
+        g.addVertex('P')
+        g.addConnectionForeExsistingNode('P', 'C')
+
+        g.changeConnection('A', 'C', 'P')
+        self.assertTrue(g.containsConnection('A', 'P'))
+        self.assertFalse(g.containsConnection('A', 'C'))
+
+
 
     def test_connectingGraph(self):
         g = Graph(2)
@@ -115,6 +161,7 @@ class TestGraph(unittest.TestCase):
 
     def test_invalid_connections_PresetGraphONE(self):
         g = Graph(2)
+        
         temp_edge_dict = {"A": ['B'],
                       "B": ['C'],
                       "C": ['D'],
@@ -128,6 +175,31 @@ class TestGraph(unittest.TestCase):
                                "E": 1,
                                "F": 1}
         g.addSetGraph(temp_edge_dict, temp_vertex_values_dict, 2)
+        g.resetGraph()
+        self.assertFalse(g.readyToPlay())
+
+        self.assertEqual({}, g.edge_dict, "Graph should be empty")
+        self.assertEqual({}, g.vertex_values, "Graph should be empty")
+
+        g.addSetGraph(temp_edge_dict, temp_vertex_values_dict, 2)
+
+        self.assertTrue(g.isPlanar(), "Graph is Planar")
+        self.assertTrue(g.readyToPlay())
+        self.assertFalse(g.checkWinner())
+
+        self.assertTrue(g.containsVertexInValues('A'))
+        self.assertTrue(g.containsVertexInValues('B'))
+        self.assertTrue(g.containsVertexInValues('C'))
+        self.assertTrue(g.containsVertexInValues('D'))
+        self.assertTrue(g.containsVertexInValues('E'))
+        self.assertTrue(g.containsVertexInValues('F'))
+
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('A'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('B'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('C'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('D'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('E'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('F'))
 
         self.assertFalse(g.containsConnection("A", 'A'))
         self.assertFalse(g.containsConnection("A", 'C'))
@@ -166,7 +238,118 @@ class TestGraph(unittest.TestCase):
         self.assertFalse(g.containsConnection("F", 'E'))
         self.assertFalse(g.containsConnection("F", 'F'))
         
+
+    def test_PresetGraphTWO(self):
+        g = PreLoadedGraphs.createOptionTwo()
+
+        temp_edge_dict = g.edge_dict
+        temp_vertex_values_dict = g.vertex_values
+        modulus = 2
+
+        g.resetGraph()
+        self.assertFalse(g.readyToPlay())
+
+        self.assertEqual({}, g.edge_dict, "Graph should be empty")
+        self.assertEqual({}, g.vertex_values, "Graph should be empty")
+
+        g.addSetGraph(temp_edge_dict, temp_vertex_values_dict, modulus)
+
+        self.assertTrue(g.isPlanar(), "Graph is Planar")
+        self.assertTrue(g.readyToPlay())
+        self.assertFalse(g.checkWinner())
+
+        self.assertTrue(g.containsVertexInValues('A'))
+        self.assertTrue(g.containsVertexInValues('B'))
+        self.assertTrue(g.containsVertexInValues('C'))
+        self.assertTrue(g.containsVertexInValues('D'))
+        self.assertTrue(g.containsVertexInValues('E'))
+        self.assertTrue(g.containsVertexInValues('F'))
+
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('A'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('B'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('C'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('D'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('E'))
+        self.assertTrue(g.containsVertexInEdgeConnectionDict('F'))
+
+        self.assertFalse(g.containsConnection("A", 'A'))
+        self.assertFalse(g.containsConnection("A", 'C'))
+        self.assertFalse(g.containsConnection("A", 'D'))
+        self.assertFalse(g.containsConnection("A", 'E'))
+        self.assertFalse(g.containsConnection("A", 'F'))
+
+        self.assertFalse(g.containsConnection("B", 'B'))
+        self.assertFalse(g.containsConnection("B", 'A'))
+        self.assertFalse(g.containsConnection("B", 'D'))
+        self.assertFalse(g.containsConnection("B", 'E'))
+        self.assertFalse(g.containsConnection("B", 'F'))
+
+        
+        self.assertFalse(g.containsConnection("C", 'B'))
+        self.assertFalse(g.containsConnection("C", 'C'))
+        self.assertFalse(g.containsConnection("C", 'E'))
+        self.assertFalse(g.containsConnection("C", 'F'))
+
+        self.assertFalse(g.containsConnection("D", 'D'))
+        self.assertFalse(g.containsConnection("D", 'A'))
+        self.assertFalse(g.containsConnection("D", 'B'))
+        self.assertFalse(g.containsConnection("D", 'C'))
+        self.assertFalse(g.containsConnection("D", 'F'))
+
+        self.assertFalse(g.containsConnection("E", 'E'))
+        self.assertFalse(g.containsConnection("E", 'A'))
+        self.assertFalse(g.containsConnection("E", 'B'))
+        self.assertFalse(g.containsConnection("E", 'C'))
+        self.assertFalse(g.containsConnection("E", 'D'))
+       
+        self.assertFalse(g.containsConnection("F", 'A'))
+        self.assertFalse(g.containsConnection("F", 'B'))
+        self.assertFalse(g.containsConnection("F", 'C'))
+        self.assertFalse(g.containsConnection("F", 'D'))
+        self.assertFalse(g.containsConnection("F", 'E'))
+        self.assertFalse(g.containsConnection("F", 'F'))
     
+        self.assertTrue(g.containsConnection('A', 'B'))  
+        self.assertTrue(g.containsConnection('B', 'C'))  
+        self.assertTrue(g.containsConnection("C", 'A'))
+        self.assertTrue(g.containsConnection('C', 'D')) 
+        self.assertTrue(g.containsConnection('D', 'E')) 
+        self.assertTrue(g.containsConnection('E', 'F')) 
+
+
+        self.assertEqual(['B'], g.getListOfAdjacentVerticies('A'), "A should be adjacent to B")
+        self.assertEqual(['C'], g.getListOfAdjacentVerticies('B'), "B should be adjacent to C")
+        #self.assertEqual(['D', 'A'], g.getListOfAdjacentVerticies('C'), "C should be adjacent to A and D")
+        self.assertEqual(['E'], g.getListOfAdjacentVerticies('D'), "D should be adjacent to E")
+        self.assertEqual(['F'], g.getListOfAdjacentVerticies('E'), "E should be adjacent to F")
+
+        g.toggleVertex("A")
+        self.assertEqual(g.vertex_values["A"],0, "TOGGLING A: Vertex A should be 0")
+        self.assertEqual(g.vertex_values["B"],0, "TOGGLING A: Vertex B should be 0")
+        self.assertEqual(g.vertex_values["C"],1, "TOGGLING A: Vertex C should be 1")
+        self.assertEqual(g.vertex_values["D"],1, "TOGGLING A: Vertex D should be 1")
+        self.assertEqual(g.vertex_values["E"],1, "TOGGLING A: Vertex E should be 1")
+        self.assertEqual(g.vertex_values["F"],1, "TOGGLING A: Vertex F should be 1")
+        self.assertFalse(g.checkWinner())
+
+        g.toggleVertex("C")
+        self.assertEqual(g.vertex_values["A"],1, "TOGGLING C: Vertex A should be 1")
+        self.assertEqual(g.vertex_values["B"],0, "TOGGLING C: Vertex B should be 0")
+        self.assertEqual(g.vertex_values["C"],0, "TOGGLING C: Vertex C should be 0")
+        self.assertEqual(g.vertex_values["D"],0, "TOGGLING C: Vertex D should be 0")
+        self.assertEqual(g.vertex_values["E"],1, "TOGGLING C: Vertex E should be 1")
+        self.assertEqual(g.vertex_values["F"],1, "TOGGLING C: Vertex F should be 1")
+        self.assertFalse(g.checkWinner())
+
+        g.toggleVertex("E")
+        self.assertEqual(g.vertex_values["A"],1, "TOGGLING E: Vertex A should be 0")
+        self.assertEqual(g.vertex_values["B"],0, "TOGGLING E: Vertex B should be 0")
+        self.assertEqual(g.vertex_values["C"],0, "TOGGLING E: Vertex C should be 0")
+        self.assertEqual(g.vertex_values["D"],0, "TOGGLING E: Vertex D should be 0")
+        self.assertEqual(g.vertex_values["E"],0, "TOGGLING E: Vertex E should be 0")
+        self.assertEqual(g.vertex_values["F"],0, "TOGGLING E: Vertex F should be 0")
+
+
 
 
 if __name__ == '__main__':

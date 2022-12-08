@@ -21,6 +21,9 @@ vertex_button_dict = {}
  
 global game_graph
 game_graph = Graph(2)
+
+global starter_game_graph
+starter_game_graph = Graph(2)
  
 global list_of_game_btns
 list_of_game_btns = []
@@ -52,7 +55,7 @@ def destoryWidget(widget):
         if child == widget:
             child.destroy()
  
-def toggleBTN(btn, preset_value):
+def toggleBTN(btn, preset_value="None"):
     global vertex_button_dict
     global game_graph
     global list_of_game_btns
@@ -69,13 +72,16 @@ def toggleBTN(btn, preset_value):
     #highlightbackground='red'
     newColor_currentVertex_MAC = toggleButtonColor(btn['highlightbackground'])
     newColor_currentVertex = toggleButtonColor(btn['bg'])
+
     btn["bg"] = newColor_currentVertex
     btn['highlightbackground'] = newColor_currentVertex_MAC
+
     for wgd in app.winfo_children(): # all widgets
         if wgd['text'] in edge_list:
             print("changing button color")
             newColor = toggleButtonColor(wgd['bg']) # change the background color
             newColorMAC = toggleButtonColor(wgd['highlightbackground'])
+
             wgd["bg"] = newColor
             wgd["highlightbackground"] = newColorMAC
 
@@ -298,6 +304,17 @@ def drawBtn_selected():
     )
     back_btn.place(relx=.65, rely=.030, relheight=.070, relwidth=.070)
 
+    vertex_warning = tk.Label(
+        app,
+        text="Click to place a vertex!",
+        font=("Arial", 17),
+        bg = "#c7e7c9",
+        activeforeground = "#c7e7c9",  # Set the background color to black
+        width = 40,
+        height = 20
+            )
+    vertex_warning.place(relx=.27, rely=.10, relheight=.1, relwidth=.5)
+
     app.old_coords = None
 
     app.bind('<Button-1>', draw_vertex)
@@ -320,8 +337,8 @@ def clearNOTCreatedGraph():
     global indexOfAlphabet
     for child in app.winfo_children():
         # if it is a button, if it is a vertex
-        if child.winfo_class() != 'Button' \
-        and len(child['text']) == 1:
+        #(child.winfo_class() != 'Button' and ...
+        if len(child['text']) != 1:
             child.destroy()
 
 
@@ -387,6 +404,12 @@ def endCreateLine(event):
     print("ending edge: " + str(tempStorage[1]))
     addEdgeConnection()
 
+def activateGameGraphBTNS():
+    global vertex_button_dict
+    for btn in vertex_button_dict:
+        #acitvate btn
+        btn['command'] = lambda:[toggleBTN(btn)]
+
 
 def addEdgeConnection():
     global tempStorage
@@ -405,7 +428,7 @@ def addEdgeConnection():
     height=5,
     activebackground = "black",
     activeforeground = "gray",
-    command=partial(beginGame, game_graph)
+    command=lambda: [clearNOTCreatedGraph(), beginGame()]
     )
     if game_graph.readyToPlay():
         startGame_btn.place(relx=.45, rely=.80, relheight=.155, relwidth=.155)
@@ -448,8 +471,6 @@ def contructGraph(list_of_verticies, list_of_edges, button_list):
 def draw_vertex(event):
     global alphabet
     global indexOfAlphabet
-
-    
 
     x1=event.x
     y1=event.y
@@ -587,10 +608,10 @@ def beginGame(preset_value = "None"):
     global game_graph
     global list_of_game_btns
  
-
+    #if user created their own graph, reove everything except for the graph
     if preset_value == "None": 
         #wipe everything that isn't a vertex or a line
-        print("hello")  
+        activateGameGraphBTNS()
         clearNOTCreatedGraph()
     else:
         resetScreen(app)
