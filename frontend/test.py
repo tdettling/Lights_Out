@@ -6,7 +6,11 @@ from Graph import Graph
 
 class TestGraph(unittest.TestCase):
 
-    def test_geenral(self):
+    """
+    Tests the general fucntionality of the Graph.py file.
+    Includes checking both false and true vertices, and adding vertices.
+    """
+    def test_general(self):
         g = Graph(2)
         #self.assertFalse(g.addVertex("D", 'A', 0))
         #print("test a graph: ")
@@ -28,6 +32,10 @@ class TestGraph(unittest.TestCase):
         self.assertTrue(g.containsConnection('A', 'C'))
         self.assertFalse(g.containsConnection("D", 'A'))
 
+    """
+    Tests creating your own graph. 
+    Includes checking both false and true vertices, adding vertices, and changing connections.
+    """
     def test_create_graph(self):
         g = Graph(2)
         g.addVertex('A')
@@ -62,6 +70,10 @@ class TestGraph(unittest.TestCase):
         self.assertFalse(g.containsConnection('A', 'C'))
 
 
+    """
+    Tests replacing an instantiated graph with a new one and the transition of connections. 
+    Includes checking the values of a graph, and checking connections.
+    """
 
     def test_connectingGraph(self):
         g = Graph(2)
@@ -82,6 +94,10 @@ class TestGraph(unittest.TestCase):
         #g.printGraph()
         self.assertTrue(g.containsConnection("B", 'C'))
 
+    """
+    Tests basic functionality of checking for a winner and toggeling a vertex. 
+    Includes checking for a winner, and toggeling a vertex.
+    """
     def test_togglePresetONE(self):
         g = Graph(2)
         temp_edge_dict = {"A": ['B'],
@@ -108,6 +124,11 @@ class TestGraph(unittest.TestCase):
 
         self.assertFalse(g.checkWinner())
 
+
+    """
+    Tests preset one. 
+    Includes checking for a winner, toggeling a vertex, and checking connections.
+    """
     def test_winPresetONE(self):
         g = Graph(2)
         temp_edge_dict = {"A": ['B'],
@@ -159,7 +180,12 @@ class TestGraph(unittest.TestCase):
         self.assertEqual(g.vertex_values["F"],0, "TOGGLING E: Vertex F should be 0")
         self.assertTrue(g.checkWinner())
 
-    def test_invalid_connections_PresetGraphONE(self):
+
+    """
+    Tests invalid connections, planarity, and ready to play. 
+    Includes reseting and intializing the graph, planarity, ready to play, and checking connections.
+    """
+    def test_invalid_connections(self):
         g = Graph(2)
         
         temp_edge_dict = {"A": ['B'],
@@ -239,6 +265,11 @@ class TestGraph(unittest.TestCase):
         self.assertFalse(g.containsConnection("F", 'F'))
         
 
+    """
+    Tests preset two. 
+    Includes reseting and intializing the graph, planarity, 
+    ready to play, getting the adjacent verticies, and checking connections.
+    """
     def test_PresetGraphTWO(self):
         g = PreLoadedGraphs.createOptionTwo()
 
