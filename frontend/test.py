@@ -6,6 +6,16 @@ from Graph import Graph
 
 class TestGraph(unittest.TestCase):
 
+    def test_printErrors(self):
+        g = Graph(2)
+        g.printError(1)
+        g.printError(2)
+        g.printError(3)
+        g.printError(4)
+
+        g.printError(10)
+
+
     """
     Tests the general fucntionality of the Graph.py file.
     Includes checking both false and true vertices, and adding vertices.
@@ -26,11 +36,38 @@ class TestGraph(unittest.TestCase):
         self.assertTrue(g.containsVertexInValues('A'))
         self.assertTrue(g.containsVertexInEdgeConnectionDict('D'))
         self.assertTrue(g.containsVertexInEdgeConnectionDict('A'))
+        g.addVertex('C')
+        g.addVertex('A')
 
-        g.addVertex('A', 'C')
         self.assertTrue(g.addConnectionForeExsistingNode("A", 'C'))
+        self.assertFalse(g.addConnectionForeExsistingNode("A", 'X'))
         self.assertTrue(g.containsConnection('A', 'C'))
         self.assertFalse(g.containsConnection("D", 'A'))
+
+    '''
+    Tests editing a vertex value
+    '''
+    def test_editVertexValue(self):
+        g = Graph(2)
+
+        g.addVertex('A')
+        g.addVertex('B')
+        g.addVertex('C')
+
+        g.addConnectionForeExsistingNode('A', 'B')
+        self.assertTrue(g.editVertexValue('A', 0))
+        self.assertFalse(g.editVertexValue('E', 0))
+
+    '''
+    Tests for adding a vertex to the graph
+    '''
+    def test_addVertex(self):
+        g = Graph(2)
+
+        g.addVertex('A')
+        g.addVertex('B')
+        self.assertTrue(g.addVertex('C', ['A']))
+
 
     """
     Tests creating your own graph. 

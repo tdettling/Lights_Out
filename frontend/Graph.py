@@ -101,51 +101,6 @@ class Graph(object):
                     contains = True
         return contains 
 
-    """
-    Returns a string type edge list given a vertex name. 
-    Used for debugging purposes.
-    """
-    def getConnections(self, vertex_name):
-        if not self.containsVertexInEdgeConnectionDict(vertex_name) or not self.containsVertexInValues(vertex_name):
-            return False
-
-        if vertex_name not in self.edge_dict:
-            self.printError(3)
-            return -1
-        else:
-            edgeSet = ""
-            temp_edge = ""
-            for key in self.edge_dict:
-                if key == vertex_name:
-                    temp_edge = self.edge_dict[key]
-            if len(temp_edge) == 0:
-                self.printError(2)
-                return False
-    
-            return edgeSet
-    """
-    Returns a string type edge list given a vertex.  
-    Contains a check for empty edge lists. 
-    For future use.
-    """
-    def parseEdges(self, vertex_name):
-        if not self.containsVertexInEdgeConnectionDict(vertex_name) or not self.containsVertexInValues(vertex_name):
-            return False
-
-        edgeList = ""
-        if vertex_name in self.edge_dict:
-            edges = self.edge_dict[vertex_name]
-        else:
-            self.printError(3)
-            return
-
-        if len(edges) == 0:
-            self.printError(2)
-            return edgeList
-        else: 
-            for edge in edges:
-                edgeList = edgeList + str(edge)
-            return edgeList
 
     """
     Saves the adjacent vertex given the starting vertex.  
@@ -153,6 +108,7 @@ class Graph(object):
     """
     def addConnectionForeExsistingNode(self, vertex_name, adjacent_vertex):
         if not self.containsVertexInEdgeConnectionDict(vertex_name) or not self.containsVertexInValues(vertex_name) \
+            or not self.containsVertexInEdgeConnectionDict(adjacent_vertex) or not self.containsVertexInValues(adjacent_vertex) \
             or self.containsConnection(vertex_name, adjacent_vertex):
             return False
         self.edge_dict[vertex_name].append(adjacent_vertex)
@@ -173,7 +129,12 @@ class Graph(object):
         self.vertex_values[vertex_name] = vertex_value
 
         if connection != "none":
-            self.edge_dict[vertex_name].append(connection)
+            if len(connection) < 2:
+                self.edge_dict[vertex_name] = []
+                self.edge_dict[vertex_name].append(connection)
+            else:
+                for adj_vertex in connection:
+                    self.edge_dict[vertex_name].append(adj_vertex)
         else:
             self.edge_dict[vertex_name] = []
         return True
@@ -194,7 +155,11 @@ class Graph(object):
     For future use.
     """
     def editVertexValue(self, vertex_name, new_value):
+        if not self.containsVertexInEdgeConnectionDict(vertex_name) or not self.containsVertexInValues(vertex_name):
+            return False
+
         self.vertex_values[vertex_name] = (new_value) % self.max_vertex_value
+        return True
         
     """
     Adds one to vertex_value based on a provided vertex. 
